@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+*.suo
+*.db
+*.opendb
+/Engine/Intermediate
+*.tss
+*.ipch
+*.filters
+*.user
