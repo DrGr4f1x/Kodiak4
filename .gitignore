@@ -36,5 +36,10 @@
 /Engine/Intermediate
 *.tss
 *.ipch
-*.filters
 *.user
+*.iobj
+*.ipdb
+*.pdb
+*.ilk
+*.tlog
+/Apps/Triangle/Intermediate/x64

@@ -33,6 +33,7 @@ protected:
 	HINSTANCE	m_hinst{ 0 };
 	HWND		m_hwnd{ 0 };
 
+	bool m_isRunning{ false };
 
 private:
 	bool Tick();

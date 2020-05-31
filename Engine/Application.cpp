@@ -76,22 +76,32 @@ void Application::Run()
 
 	ShowWindow(m_hwnd, SW_SHOWDEFAULT);
 
+	// TODO - Move to the end of Initialize, once that method exists
+	m_isRunning = true;
+
 	do
 	{
 		MSG msg = {};
 		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
+			if (msg.message == WM_QUIT)
+			{
+				m_isRunning = false;
+				break;
+			}
+
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		if (msg.message == WM_QUIT)
-			break;
 	} while (Tick());	// Returns false to quit loop
 }
 
 
 bool Application::Tick()
 {
+	if (!m_isRunning)
+		return false;
+
 	return true;
 }
 

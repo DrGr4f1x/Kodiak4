@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="NonCopyable.h" />
+    <ClInclude Include="Filesystem.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="VK\PlatformVk.h">
+      <Filter>Graphics\VK</Filter>
+    </ClInclude>
+    <ClInclude Include="DX12\Platform12.h">
+      <Filter>Graphics\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\CommonMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Stdafx.cpp" />
+    <ClCompile Include="Filesystem.cpp" />
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Application.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{c679a5a6-3643-4606-9e97-33f7450457d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\DX12">
+      <UniqueIdentifier>{0ed148d6-cc7f-4de2-ba5d-6eb3535c603c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK">
+      <UniqueIdentifier>{39db9c21-ce93-45b1-8be0-55192bf5547f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{7906b418-7c90-42d7-9e39-8126876980e6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
