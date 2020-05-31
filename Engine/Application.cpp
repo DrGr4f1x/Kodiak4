@@ -13,6 +13,7 @@
 #include "Application.h"
 
 #include "Filesystem.h"
+#include "Input.h"
 
 #pragma comment(lib, "runtimeobject.lib")
 
@@ -76,9 +77,13 @@ void Application::Run()
 
 	assert(m_hwnd != 0);
 
+	LOG_NOTICE << appNameWithAPI << endl;
+
 	Initialize();
 
 	ShowWindow(m_hwnd, SW_SHOWDEFAULT);
+
+	LOG_NOTICE << "Beginning main loop";
 
 	do
 	{
@@ -95,6 +100,8 @@ void Application::Run()
 			DispatchMessage(&msg);
 		}
 	} while (Tick());	// Returns false to quit loop
+
+	LOG_NOTICE << "Terminating main loop" << endl;
 
 	Finalize();
 }
@@ -123,16 +130,31 @@ const string& Application::GetDefaultShaderPath()
 void Application::Initialize()
 {
 	Configure();
+	InitializeLogging();
+
+	LOG_NOTICE << "Initializing application";
 
 	Startup();
 
+	g_input.Initialize(m_hwnd);
+
 	m_isRunning = true;
+
+	LOG_NOTICE << "  Finished initialization" << endl;
 }
 
 
 void Application::Finalize()
 {
+	LOG_NOTICE << "Finalizing application";
+
 	Shutdown();
+	
+	g_input.Shutdown();
+
+	LOG_NOTICE << "  Finished finalization";
+
+	ShutdownLogging();
 }
 
 
@@ -140,6 +162,18 @@ bool Application::Tick()
 {
 	if (!m_isRunning)
 		return false;
+
+	auto timeStart = chrono::high_resolution_clock::now();
+
+	g_input.Update(m_frameTimer);
+
+	// Close on Escape key
+	if (g_input.IsFirstPressed(DigitalInput::kKey_escape))
+		return false;
+
+	auto timeEnd = chrono::high_resolution_clock::now();
+	auto timeDiff = chrono::duration<double, std::milli>(timeEnd - timeStart).count();
+	m_frameTimer = static_cast<float>(timeDiff) / 1000.0f;
 
 	return true;
 }

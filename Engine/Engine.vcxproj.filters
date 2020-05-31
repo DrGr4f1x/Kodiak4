@@ -49,6 +49,7 @@
     <ClInclude Include="BitmaskEnum.h" />
     <ClInclude Include="Hash.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="Input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -63,6 +64,7 @@
     </ClCompile>
     <ClCompile Include="Hash.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

@@ -39,7 +39,9 @@ protected:
 	HINSTANCE	m_hinst{ 0 };
 	HWND		m_hwnd{ 0 };
 
+	// Application state
 	bool m_isRunning{ false };
+	float m_frameTimer{ 0.0f };
 
 private:
 	void Initialize();

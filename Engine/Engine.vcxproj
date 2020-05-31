@@ -251,6 +251,7 @@
     </ClInclude>
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="Hash.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Math\BoundingPlane.h" />
     <ClInclude Include="Math\BoundingSphere.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Hash.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Math\Frustum.cpp" />
     <ClCompile Include="Math\Random.cpp" />

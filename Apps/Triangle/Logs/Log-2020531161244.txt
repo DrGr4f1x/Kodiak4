@@ -1,0 +1,12 @@
+ Notice: [DirectX 12] Triangle
+
+ Notice: Initializing application
+ Notice:   Initializing input device
+ Notice:   Finished initialization
+
+ Notice: Beginning main loop
+ Notice: Terminating main loop
+
+ Notice: Finalizing application
+ Notice:   Shutting down input device
+ Notice:   Finished finalization
