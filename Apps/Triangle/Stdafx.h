@@ -64,6 +64,6 @@ inline void ThrowIfFailed(HRESULT hr)
 #include <string>
 
 // Engine headers
-#include "Math\CommonMath.h"
 #include "NonCopyable.h"
 #include "Utility.h"
+#include "VectorMath.h"

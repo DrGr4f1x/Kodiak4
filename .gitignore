@@ -43,3 +43,5 @@
 *.ilk
 *.tlog
 /Apps/Triangle/Intermediate/x64
+*.db-shm
+*.db-wal
