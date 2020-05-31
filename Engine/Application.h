@@ -23,6 +23,12 @@ public:
 
 	void Run();
 
+	// Override these methods in derived classes
+	virtual void Configure();
+	virtual void Startup() {}
+	virtual void Shutdown() {}
+
+	const std::string& GetDefaultShaderPath();
 
 protected:
 	const std::string m_name;
@@ -36,6 +42,8 @@ protected:
 	bool m_isRunning{ false };
 
 private:
+	void Initialize();
+	void Finalize();
 	bool Tick();
 };
 

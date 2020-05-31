@@ -12,6 +12,8 @@
 
 #include "Application.h"
 
+#include "Filesystem.h"
+
 #pragma comment(lib, "runtimeobject.lib")
 
 
@@ -74,10 +76,9 @@ void Application::Run()
 
 	assert(m_hwnd != 0);
 
-	ShowWindow(m_hwnd, SW_SHOWDEFAULT);
+	Initialize();
 
-	// TODO - Move to the end of Initialize, once that method exists
-	m_isRunning = true;
+	ShowWindow(m_hwnd, SW_SHOWDEFAULT);
 
 	do
 	{
@@ -94,6 +95,44 @@ void Application::Run()
 			DispatchMessage(&msg);
 		}
 	} while (Tick());	// Returns false to quit loop
+
+	Finalize();
+}
+
+
+void Application::Configure()
+{
+	// Setup file system
+	auto& filesystem = Filesystem::GetInstance();
+
+	filesystem.SetDefaultRootPath();
+	filesystem.AddSearchPath("Data\\" + GetDefaultShaderPath());
+	filesystem.AddSearchPath("..\\Data");
+	filesystem.AddSearchPath("..\\Data\\" + GetDefaultShaderPath());
+	filesystem.AddSearchPath("..\\Data\\Textures");
+	filesystem.AddSearchPath("..\\Data\\Models");
+}
+
+
+const string& Application::GetDefaultShaderPath()
+{
+	return s_defaultShaderPath;
+}
+
+
+void Application::Initialize()
+{
+	Configure();
+
+	Startup();
+
+	m_isRunning = true;
+}
+
+
+void Application::Finalize()
+{
+	Shutdown();
 }
 
 
