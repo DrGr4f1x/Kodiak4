@@ -58,12 +58,16 @@ inline void ThrowIfFailed(HRESULT hr)
 
 // Standard library headers
 #include <filesystem>
+#include <fstream>
+#include <future>
 #include <mutex>
 #include <shared_mutex>
 #include <sstream>
 #include <string>
 
 // Engine headers
+#include "BitmaskEnum.h"
+#include "Log.h"
 #include "NonCopyable.h"
 #include "Utility.h"
 #include "VectorMath.h"

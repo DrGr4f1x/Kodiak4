@@ -49,13 +49,13 @@ inline BoundingSphere::BoundingSphere(Vector4 sphere)
 {}
 
 
-inline Vector3 BoundingSphere::GetCenter(void) const
+inline Vector3 BoundingSphere::GetCenter() const
 {
 	return Vector3(m_repr);
 }
 
 
-inline Scalar BoundingSphere::GetRadius(void) const
+inline Scalar BoundingSphere::GetRadius() const
 {
 	return m_repr.GetW();
 }
