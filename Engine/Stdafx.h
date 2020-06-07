@@ -57,9 +57,11 @@ inline void ThrowIfFailed(HRESULT hr)
 #endif
 
 // Standard library headers
+#include <array>
 #include <filesystem>
 #include <fstream>
 #include <future>
+#include <map>
 #include <mutex>
 #include <shared_mutex>
 #include <sstream>
@@ -67,6 +69,7 @@ inline void ThrowIfFailed(HRESULT hr)
 
 // Engine headers
 #include "BitmaskEnum.h"
+#include "GraphicsEnums.h"
 #include "Log.h"
 #include "NonCopyable.h"
 #include "Utility.h"

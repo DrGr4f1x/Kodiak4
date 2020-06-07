@@ -21,6 +21,11 @@
 
 #pragma comment(lib, "vulkan-1.lib")
 
+#include "Extern\VulkanMemoryAllocator\vk_mem_alloc.h"
+
+#include "RefCountVk.h"
+#include "StructuresVk.h"
+
 // Custom define for better code readability
 #define VK_FLAGS_NONE 0
 // Default fence timeout in nanoseconds
