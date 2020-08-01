@@ -1,9 +1,0 @@
- Notice: [DirectX 12] Triangle
- Notice: Initializing application
- Notice:   Finished initialization
-
- Notice: Beginning main loop
- Notice: Terminating main loop
-
- Notice: Finalizing application
- Notice:   Finished finalization
