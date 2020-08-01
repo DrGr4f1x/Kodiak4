@@ -102,7 +102,7 @@ private:
 	VkInstance m_instance{ VK_NULL_HANDLE };
 };
 
-
+#if 0
 class PhysicalDeviceRef : public Reference<InstanceRef>, public NonCopyable
 {
 public:
@@ -305,5 +305,6 @@ private:
 private:
 	VkSwapchainKHR m_swapchain{ VK_NULL_HANDLE };
 };
+#endif
 
 } // namespace Kodiak

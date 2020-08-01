@@ -9,3 +9,24 @@
 //
 
 #pragma once
+
+namespace Kodiak
+{
+
+class GraphicsDevice
+{
+public:
+	GraphicsDevice();
+
+	void Initialize(
+		const std::string& appName,
+		HINSTANCE hinst,
+		HWND hwnd,
+		uint32_t width,
+		uint32_t height,
+		Format colorFormat,
+		Format depthFormat);
+	void Finalize();
+};
+
+} // namespace Kodiak

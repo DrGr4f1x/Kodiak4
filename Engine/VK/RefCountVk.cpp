@@ -31,6 +31,7 @@ shared_ptr<InstanceRef> InstanceRef::Create(VkInstance instance)
 }
 
 
+#if 0
 PhysicalDeviceRef::~PhysicalDeviceRef()
 {
 	m_physicalDevice = VK_NULL_HANDLE;
@@ -176,3 +177,4 @@ shared_ptr<SwapchainRef> SwapchainRef::Create(const shared_ptr<DeviceRef>& devic
 	shared_ptr<SwapchainRef> ptr(new SwapchainRef(device, swapchain));
 	return ptr;
 }
+#endif

@@ -13,4 +13,20 @@
 namespace Kodiak
 {
 
+inline VkApplicationInfo ApplicationInfo()
+{
+	VkApplicationInfo applicationInfo {};
+	applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+	return applicationInfo;
+}
+
+
+inline VkInstanceCreateInfo InstanceCreateInfo()
+{
+	VkInstanceCreateInfo instanceCreateInfo{};
+	instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	instanceCreateInfo.pNext = nullptr;
+	return instanceCreateInfo;
+}
+
 } // namespace Kodiak

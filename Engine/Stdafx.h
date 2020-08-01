@@ -74,3 +74,22 @@ inline void ThrowIfFailed(HRESULT hr)
 #include "NonCopyable.h"
 #include "Utility.h"
 #include "VectorMath.h"
+
+// Engine info
+#define KODIAK_MAKE_VERSION(major, minor, patch) \
+    (((major) << 22) | ((minor) << 12) | (patch))
+#define KODIAK_VERSION_MAJOR(version) ((uint32_t)(version) >> 22)
+#define KODIAK_VERSION_MINOR(version) (((uint32_t)(version) >> 12) & 0x3ff)
+#define KODIAK_VERSION_PATCH(version) ((uint32_t)(version) & 0xfff)
+
+constexpr uint32_t s_engineMajorVersion = 4;
+constexpr uint32_t s_engineMinorVersion = 0;
+constexpr uint32_t s_enginePatchVersion = 0;
+
+constexpr uint32_t s_engineVersion = KODIAK_MAKE_VERSION(s_engineMajorVersion, s_engineMinorVersion, s_enginePatchVersion);
+static const std::string s_engineVersionStr
+{
+	std::to_string(s_engineMajorVersion) + "." + std::to_string(s_engineMinorVersion) + "." + std::to_string(s_enginePatchVersion)
+};
+
+static const std::string s_engineName{ "Kodiak" };

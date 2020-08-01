@@ -215,6 +215,15 @@ bool Application::Tick()
 void Application::InitializeSystems()
 {
 	// Initialize the graphics device
+	m_graphicsDevice = make_unique<GraphicsDevice>();
+	m_graphicsDevice->Initialize(
+		m_name, 
+		m_hinst, 
+		m_hwnd, 
+		m_displayWidth, 
+		m_displayHeight, 
+		Format::R8G8B8A8_UNorm, 
+		Format::D32_Float_S8_UInt);
 
 	// Initialize the input device
 	m_inputDevice = make_unique<InputDevice>();
@@ -232,6 +241,7 @@ void Application::FinalizeSystems()
 	m_inputDevice->Finalize();
 
 	// Destroy the graphics device
+	m_graphicsDevice->Finalize();
 }
 
 
