@@ -173,11 +173,11 @@ enum class AnalogInput
 };
 
 
-class Input
+class InputDevice
 {
 public:
 	void Initialize(HWND hwnd);
-	void Shutdown();
+	void Finalize();
 	void Update(float deltaT);
 
 	bool IsAnyPressed() const;
@@ -223,7 +223,5 @@ private:
 	IDirectInputDevice8A* m_mouse{ nullptr };
 	bool m_captureMouse{ false };
 };
-
-extern Input g_input;
 
 } // namespace Kodiak

@@ -17,11 +17,9 @@ using namespace Kodiak;
 using namespace std;
 
 
-Input Kodiak::g_input;
-
-
 namespace
 {
+
 float FilterAnalogInput(int val, int deadZone)
 {
 	if (val < 0)
@@ -47,10 +45,11 @@ float FilterAnalogInput(int val, int deadZone)
 		}
 	}
 }
+
 } // anonymous namespace
 
 
-void Input::Initialize(HWND hwnd)
+void InputDevice::Initialize(HWND hwnd)
 {
 	LOG_NOTICE << "  Initializing input device";
 
@@ -110,7 +109,7 @@ void Input::Initialize(HWND hwnd)
 }
 
 
-void Input::Shutdown()
+void InputDevice::Finalize()
 {
 	LOG_NOTICE << "  Shutting down input device";
 
@@ -136,7 +135,7 @@ void Input::Shutdown()
 }
 
 
-void Input::Update(float deltaT)
+void InputDevice::Update(float deltaT)
 {
 	memcpy(m_buttons[1], m_buttons[0], sizeof(m_buttons[0]));
 	memset(m_buttons[0], 0, sizeof(m_buttons[0]));
@@ -194,62 +193,62 @@ void Input::Update(float deltaT)
 }
 
 
-bool Input::IsAnyPressed() const
+bool InputDevice::IsAnyPressed() const
 {
 	return m_buttons[0] != 0;
 }
 
 
-bool Input::IsPressed(DigitalInput di) const
+bool InputDevice::IsPressed(DigitalInput di) const
 {
 	int index = static_cast<int>(di);
 	return m_buttons[0][index];
 }
 
 
-bool Input::IsFirstPressed(DigitalInput di) const
+bool InputDevice::IsFirstPressed(DigitalInput di) const
 {
 	int index = static_cast<int>(di);
 	return m_buttons[0][index] && !m_buttons[1][index];
 }
 
 
-bool Input::IsReleased(DigitalInput di) const
+bool InputDevice::IsReleased(DigitalInput di) const
 {
 	int index = static_cast<int>(di);
 	return !m_buttons[0][index];
 }
 
 
-bool Input::IsFirstReleased(DigitalInput di) const
+bool InputDevice::IsFirstReleased(DigitalInput di) const
 {
 	int index = static_cast<int>(di);
 	return !m_buttons[0][index] && m_buttons[1][index];
 }
 
 
-float Input::GetDurationPressed(DigitalInput di) const
+float InputDevice::GetDurationPressed(DigitalInput di) const
 {
 	int index = static_cast<int>(di);
 	return m_holdDuration[index];
 }
 
 
-float Input::GetAnalogInput(AnalogInput ai) const
+float InputDevice::GetAnalogInput(AnalogInput ai) const
 {
 	int index = static_cast<int>(ai);
 	return m_analogs[index];
 }
 
 
-float Input::GetTimeCorrectedAnalogInput(AnalogInput ai) const
+float InputDevice::GetTimeCorrectedAnalogInput(AnalogInput ai) const
 {
 	int index = static_cast<int>(ai);
 	return m_analogsTC[index];
 }
 
 
-void Input::KbmBuildKeyMapping()
+void InputDevice::KbmBuildKeyMapping()
 {
 	m_dxKeyMapping[(int)DigitalInput::kKey_escape] = 1;
 	m_dxKeyMapping[(int)DigitalInput::kKey_1] = 2;
@@ -358,14 +357,14 @@ void Input::KbmBuildKeyMapping()
 }
 
 
-void Input::KbmZeroInputs()
+void InputDevice::KbmZeroInputs()
 {
 	memset(&m_mouseState, 0, sizeof(DIMOUSESTATE2));
 	memset(m_keybuffer, 0, sizeof(m_keybuffer));
 }
 
 
-void Input::KbmUpdate()
+void InputDevice::KbmUpdate()
 {
 	HWND foreground = GetForegroundWindow();
 	bool visible = IsWindowVisible(foreground) != 0;

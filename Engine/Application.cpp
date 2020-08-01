@@ -13,7 +13,6 @@
 #include "Application.h"
 
 #include "Filesystem.h"
-#include "Input.h"
 
 #pragma comment(lib, "runtimeobject.lib")
 
@@ -197,10 +196,10 @@ bool Application::Tick()
 
 	auto timeStart = chrono::high_resolution_clock::now();
 
-	g_input.Update(m_frameTimer);
+	m_inputDevice->Update(m_frameTimer);
 
 	// Close on Escape key
-	if (g_input.IsFirstPressed(DigitalInput::kKey_escape))
+	if (m_inputDevice->IsFirstPressed(DigitalInput::kKey_escape))
 	{
 		return false;
 	}
@@ -218,7 +217,8 @@ void Application::InitializeSystems()
 	// Initialize the graphics device
 
 	// Initialize the input device
-	g_input.Initialize(m_hwnd);
+	m_inputDevice = make_unique<InputDevice>();
+	m_inputDevice->Initialize(m_hwnd);
 
 	// Initialize the UI overlay
 }
@@ -228,8 +228,8 @@ void Application::FinalizeSystems()
 {
 	// Destroy the UI overlay
 
-	// Destroy the input device
-	g_input.Shutdown();
+	// Finalize the input device
+	m_inputDevice->Finalize();
 
 	// Destroy the graphics device
 }

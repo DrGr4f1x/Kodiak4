@@ -47,3 +47,4 @@
 # Paths
 **/Intermediate
 **/Logs
+.vs/**

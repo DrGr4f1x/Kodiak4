@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "Input.h"
+
 
 namespace Kodiak
 {
@@ -42,6 +44,9 @@ protected:
 	// Application state
 	bool m_isRunning{ false };
 	float m_frameTimer{ 0.0f };
+
+	// Application devices
+	std::unique_ptr<InputDevice> m_inputDevice;
 
 private:
 	void CreateAppWindow();
