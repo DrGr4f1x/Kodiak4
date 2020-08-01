@@ -176,7 +176,7 @@ void InitializeLogging()
 }
 
 
-void ShutdownLogging()
+void FinalizeLogging()
 {
 	LogHandler::GetInstance().Shutdown();
 }

@@ -26,7 +26,7 @@ enum class LogLevel
 std::string LogLevelToString(LogLevel level);
 
 void InitializeLogging();
-void ShutdownLogging();
+void FinalizeLogging();
 
 
 struct LogMessage

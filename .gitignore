@@ -33,7 +33,6 @@
 *.suo
 *.db
 *.opendb
-/Engine/Intermediate
 *.tss
 *.ipch
 *.user
@@ -42,6 +41,9 @@
 *.pdb
 *.ilk
 *.tlog
-/Apps/Triangle/Intermediate/x64
 *.db-shm
 *.db-wal
+
+# Paths
+**/Intermediate
+**/Logs

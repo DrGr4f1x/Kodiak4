@@ -44,9 +44,13 @@ protected:
 	float m_frameTimer{ 0.0f };
 
 private:
+	void CreateAppWindow();
 	void Initialize();
 	void Finalize();
 	bool Tick();
+
+	void InitializeSystems();
+	void FinalizeSystems();
 };
 
 } // namespace Kodiak

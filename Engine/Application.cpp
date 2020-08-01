@@ -45,39 +45,7 @@ Application::Application(const string& name, uint32_t width, uint32_t height)
 
 void Application::Run()
 {
-	Microsoft::WRL::Wrappers::RoInitializeWrapper InitializeWinRT(RO_INIT_MULTITHREADED);
-	assert_succeeded(InitializeWinRT);
-
-	m_hinst = GetModuleHandle(0);
-
-	string appNameWithAPI = s_apiPrefixString + " " + m_name;
-
-	// Register class
-	WNDCLASSEX wcex;
-	wcex.cbSize = sizeof(WNDCLASSEX);
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = WndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
-	wcex.hInstance = m_hinst;
-	wcex.hIcon = LoadIcon(m_hinst, IDI_APPLICATION);
-	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = nullptr;
-	wcex.lpszClassName = appNameWithAPI.c_str();
-	wcex.hIconSm = LoadIcon(m_hinst, IDI_APPLICATION);
-	assert_msg(0 != RegisterClassEx(&wcex), "Unable to register a window");
-
-	// Create window
-	RECT rc = { 0, 0, (LONG)m_displayWidth, (LONG)m_displayHeight };
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-
-	m_hwnd = CreateWindow(appNameWithAPI.c_str(), appNameWithAPI.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, m_hinst, nullptr);
-
-	assert(m_hwnd != 0);
-
-	LOG_NOTICE << appNameWithAPI << endl;
+	CreateAppWindow();
 
 	Initialize();
 
@@ -127,20 +95,78 @@ const string& Application::GetDefaultShaderPath()
 }
 
 
+void Application::CreateAppWindow()
+{
+	Microsoft::WRL::Wrappers::RoInitializeWrapper InitializeWinRT(RO_INIT_MULTITHREADED);
+	assert_succeeded(InitializeWinRT);
+
+	m_hinst = GetModuleHandle(0);
+
+	string appNameWithAPI = s_apiPrefixString + " " + m_name;
+
+	// Register class
+	WNDCLASSEX wcex;
+	wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = m_hinst;
+	wcex.hIcon = LoadIcon(m_hinst, IDI_APPLICATION);
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = nullptr;
+	wcex.lpszClassName = appNameWithAPI.c_str();
+	wcex.hIconSm = LoadIcon(m_hinst, IDI_APPLICATION);
+	assert_msg(0 != RegisterClassEx(&wcex), "Unable to register a window");
+
+	// Create window
+	RECT rc = { 0, 0, (LONG)m_displayWidth, (LONG)m_displayHeight };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+	m_hwnd = CreateWindow(
+		appNameWithAPI.c_str(), 
+		appNameWithAPI.c_str(), 
+		WS_OVERLAPPEDWINDOW, 
+		CW_USEDEFAULT, 
+		CW_USEDEFAULT,
+		rc.right - rc.left, 
+		rc.bottom - rc.top, 
+		nullptr, 
+		nullptr, 
+		m_hinst, 
+		nullptr);
+
+	assert(m_hwnd != 0);
+
+	LOG_NOTICE << appNameWithAPI << endl;
+}
+
+
 void Application::Initialize()
 {
-	Configure();
-	InitializeLogging();
-
 	LOG_NOTICE << "Initializing application";
 
-	Startup();
+	// Run application-specific configuration (before the graphics device is created)
+	Configure();
 
-	g_input.Initialize(m_hwnd);
+	// Initialize logging.  This is done after Configure so that, if the application sets the root
+	// directory to a non-default path, the Logs directory is created relative to the actual application
+	// root.
+	// Note that any logs added before the logging system is started will simply sit in the log queue
+	// and will be processed when the log handling thread starts.
+	InitializeLogging();
+
+	// Initialize systems, such as the graphics and input devices
+	InitializeSystems();
+
+	// Run application-specific startup logic.  The graphics device exists at this point, so it is safe
+	// to create rendering resources such as textures and shaders.
+	Startup();
 
 	m_isRunning = true;
 
-	LOG_NOTICE << "  Finished initialization" << endl;
+	LOG_NOTICE << "  Initialization complete" << endl;
 }
 
 
@@ -148,20 +174,26 @@ void Application::Finalize()
 {
 	LOG_NOTICE << "Finalizing application";
 
+	// Run application-specific shutdown logic.
 	Shutdown();
 	
-	g_input.Shutdown();
+	// Finalize systems, such as the graphics and input devices
+	FinalizeSystems();
 
-	LOG_NOTICE << "  Finished finalization";
+	LOG_NOTICE << "  Finalization complete";
 
-	ShutdownLogging();
+	// Finalize logging last, so that logging is available to the application-specific Shutdown routine, 
+	// and so that the graphics device and other systems can log out messages during finalization.
+	FinalizeLogging();
 }
 
 
 bool Application::Tick()
 {
 	if (!m_isRunning)
+	{
 		return false;
+	}
 
 	auto timeStart = chrono::high_resolution_clock::now();
 
@@ -169,13 +201,37 @@ bool Application::Tick()
 
 	// Close on Escape key
 	if (g_input.IsFirstPressed(DigitalInput::kKey_escape))
+	{
 		return false;
+	}
 
 	auto timeEnd = chrono::high_resolution_clock::now();
 	auto timeDiff = chrono::duration<double, std::milli>(timeEnd - timeStart).count();
 	m_frameTimer = static_cast<float>(timeDiff) / 1000.0f;
 
 	return true;
+}
+
+
+void Application::InitializeSystems()
+{
+	// Initialize the graphics device
+
+	// Initialize the input device
+	g_input.Initialize(m_hwnd);
+
+	// Initialize the UI overlay
+}
+
+
+void Application::FinalizeSystems()
+{
+	// Destroy the UI overlay
+
+	// Destroy the input device
+	g_input.Shutdown();
+
+	// Destroy the graphics device
 }
 
 
