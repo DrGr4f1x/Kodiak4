@@ -63,6 +63,7 @@ inline void ThrowIfFailed(HRESULT hr)
 #include <future>
 #include <map>
 #include <mutex>
+#include <set>
 #include <shared_mutex>
 #include <sstream>
 #include <string>

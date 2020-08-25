@@ -10,8 +10,39 @@
 
 #pragma once
 
+#include "ExtensionManagerVk.h"
+
+
 namespace Kodiak
 {
+
+struct DeviceProperties
+{
+	DeviceProperties();
+
+	VkPhysicalDeviceProperties2 deviceProperties2;			// Base Vulkan 1.0 properties
+	VkPhysicalDeviceVulkan11Properties deviceProperties1_1; // Vulkan 1.1 properties
+	VkPhysicalDeviceVulkan12Properties deviceProperties1_2; // Vulkan 1.2 properties
+	void** ppNext{ nullptr };
+
+	void ResetPNextChain();
+};
+
+
+struct DeviceFeatures
+{
+	DeviceFeatures();
+
+	VkPhysicalDeviceFeatures2			deviceFeatures2;	// Base Vulkan 1.0 features
+	VkPhysicalDeviceVulkan11Features	deviceFeatures1_1;	// Vulkan 1.1 features
+	VkPhysicalDeviceVulkan12Features	deviceFeatures1_2;	// Vulkan 1.2 features
+	void** ppNext{ nullptr };
+
+	std::vector<VkExtensionProperties>	extensions;			// List of supported extensions
+
+	void ResetPNextChain();
+};
+
 
 class GraphicsDevice
 {
@@ -30,6 +61,11 @@ public:
 
 private:
 	void CreateInstance();
+	void SelectPhysicalDevice();
+	void GetPhysicalDeviceFeatures();
+	void EnableApplicationFeatures();
+
+	void EnableFeatures(bool required);
 
 private:
 	// Application members
@@ -46,6 +82,16 @@ private:
 
 	// Vulkan members
 	std::shared_ptr<InstanceRef> m_instance;
+	std::shared_ptr<PhysicalDeviceRef> m_physicalDevice;
+
+	// Device features and properties
+	DeviceFeatures m_supportedFeatures;
+	DeviceFeatures m_enabledFeatures;
+	DeviceProperties m_deviceProperties;
+	ExtensionManager m_extensions;
+
+	VkPhysicalDeviceMemoryProperties m_memoryProperties{};
+	std::vector<VkQueueFamilyProperties> m_queueFamilies;
 };
 
 } // namespace Kodiak

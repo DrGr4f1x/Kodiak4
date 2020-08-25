@@ -31,7 +31,6 @@ shared_ptr<InstanceRef> InstanceRef::Create(VkInstance instance)
 }
 
 
-#if 0
 PhysicalDeviceRef::~PhysicalDeviceRef()
 {
 	m_physicalDevice = VK_NULL_HANDLE;
@@ -45,6 +44,7 @@ shared_ptr<PhysicalDeviceRef> PhysicalDeviceRef::Create(const shared_ptr<Instanc
 }
 
 
+#if 0
 SurfaceRef::~SurfaceRef()
 {
 	vkDestroySurfaceKHR(*Get<InstanceRef>(), m_surface, nullptr);

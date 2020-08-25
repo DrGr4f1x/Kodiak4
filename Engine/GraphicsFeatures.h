@@ -112,7 +112,7 @@ public:
 	GraphicsFeatureProxy samplerAnisotropy{ this, GraphicsFeature::SamplerAnisotropy };
 	GraphicsFeatureProxy textureCompressionETC2{ this, GraphicsFeature::TextureCompressionETC2 };
 	GraphicsFeatureProxy textureCompressionASTC_LDR{ this, GraphicsFeature::TextureCompressionASTC_LDR };
-	GraphicsFeatureProxy textureCompressionBS{ this, GraphicsFeature::TextureCompressionBC };
+	GraphicsFeatureProxy textureCompressionBC{ this, GraphicsFeature::TextureCompressionBC };
 	GraphicsFeatureProxy occlusionQueryPrecise{ this, GraphicsFeature::OcclusionQueryPrecise };
 	GraphicsFeatureProxy pipelineStatisticsQuery{ this, GraphicsFeature::PipelineStatisticsQuery };
 	GraphicsFeatureProxy vertexPipelineStoresAndAtomics{ this, GraphicsFeature::VertexPipelineStoresAndAtomics };

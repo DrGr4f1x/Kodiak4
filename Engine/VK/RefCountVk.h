@@ -102,7 +102,7 @@ private:
 	VkInstance m_instance{ VK_NULL_HANDLE };
 };
 
-#if 0
+
 class PhysicalDeviceRef : public Reference<InstanceRef>, public NonCopyable
 {
 public:
@@ -123,6 +123,7 @@ private:
 };
 
 
+#if 0
 class SurfaceRef : public Reference<InstanceRef>, public NonCopyable
 {
 public:

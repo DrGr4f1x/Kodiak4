@@ -144,7 +144,7 @@ void Application::CreateAppWindow()
 
 void Application::Initialize()
 {
-	LOG_NOTICE << "Initializing application";
+	LOG_NOTICE << "Initializing application" << endl;
 
 	// Run application-specific configuration (before the graphics device is created)
 	Configure();

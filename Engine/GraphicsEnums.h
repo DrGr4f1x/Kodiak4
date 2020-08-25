@@ -351,6 +351,13 @@ inline bool IsBufferResource(ResourceType type)
 }
 
 
+enum class GpuClass
+{
+	LowPower,
+	HighPerformance
+};
+
+
 enum class GpuVendor
 {
 	Unknown,
@@ -368,6 +375,12 @@ inline std::string GpuVendorToString(GpuVendor vendor)
 	case GpuVendor::NVIDIA:	return std::string("NVIDIA");		break;
 	default:				return std::string("<Unknown>");	break;
 	}
+}
+
+inline std::ostream& operator<<(std::ostream& os, GpuVendor vendor)
+{
+	os << GpuVendorToString(vendor);
+	return os;
 }
 
 inline GpuVendor VendorIdToGpuVendor(uint32_t vendorId)
