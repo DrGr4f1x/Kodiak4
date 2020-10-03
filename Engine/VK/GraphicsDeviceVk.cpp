@@ -93,6 +93,9 @@ void GraphicsDevice::Initialize(
 	SelectPhysicalDevice();
 	GetPhysicalDeviceFeatures();
 	EnableApplicationFeatures();
+
+	InitializeDebugMarkup();
+	InitializeValidation();
 }
 
 
@@ -113,8 +116,12 @@ void GraphicsDevice::CreateInstance()
 
 	const vector<const char*> instanceExtensions =
 	{
+#if ENABLE_VULKAN_DEBUG_MARKUP || ENABLE_VULKAN_VALIDATION
+			VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+#endif
+
 #if ENABLE_VULKAN_VALIDATION
-			VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
+			VK_EXT_VALIDATION_FEATURES_EXTENSION_NAME,
 #endif
 			VK_KHR_SURFACE_EXTENSION_NAME,
 			VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
@@ -221,6 +228,15 @@ void GraphicsDevice::EnableApplicationFeatures()
 	// Enable the features requested by the application
 	EnableFeatures(false);	// optional features
 	EnableFeatures(true);	// required features
+
+	// Enable debug and validation extensions
+#if ENABLE_VULKAN_DEBUG_MARKUP || ENABLE_VULKAN_VALIDATION
+	m_extensions.EnableExtension(m_extensions.debugUtilsEXT.GetName(), m_enabledFeatures, m_deviceProperties);
+#endif
+
+#if ENABLE_VULKAN_VALIDATION
+	m_extensions.EnableExtension(m_extensions.validationFeaturesEXT.GetName(), m_enabledFeatures, m_deviceProperties);
+#endif
 }
 
 
@@ -237,7 +253,7 @@ void GraphicsDevice::EnableFeatures(bool required)
 			missingFeatures.push_back(featureName);
 	};
 
-	FeatureProxy featureProxy{ m_supportedFeatures, m_enabledFeatures, m_deviceProperties, m_extensions };
+	FeatureProxy featureProxy{ *m_instance, m_supportedFeatures, m_enabledFeatures, m_deviceProperties, m_extensions };
 
 	const auto numFeatures = requestedFeatures.GetNumFeatures();
 	for (auto i = 0; i < numFeatures; ++i)
@@ -398,6 +414,10 @@ void GraphicsDevice::EnableFeatures(bool required)
 
 		case GraphicsFeature::ShaderInt8:
 			TryEnableFeature(featureName, EnableShaderInt8(featureProxy));
+			break;
+
+		case GraphicsFeature::VariableMultisampleRate:
+			TryEnableFeature(featureName, EnableVariableMultisampleRate(featureProxy));
 			break;
 		}
 	}

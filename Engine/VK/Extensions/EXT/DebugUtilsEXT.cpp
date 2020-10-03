@@ -10,23 +10,22 @@
 
 #include "Stdafx.h"
 
-#include "ExtensionsVk.h"
+#include "DebugUtilsEXT.h"
 
-#include "ExtensionManagerVk.h"
-#include "GraphicsDeviceVk.h"
+#include "VK\ExtensionManagerVk.h"
 
 
 using namespace Kodiak;
 using namespace std;
 
 
-BufferMarkerAMD::BufferMarkerAMD(ExtensionManager* manager)
+DebugUtilsEXT::DebugUtilsEXT(ExtensionManager* manager)
 {
 	manager->RegisterExtension(this);
 }
 
 
-void BufferMarkerAMD::Enable(DeviceFeatures& features, DeviceProperties& properties)
+void DebugUtilsEXT::Enable(DeviceFeatures& features, DeviceProperties& properties)
 {
 	m_isEnabled = true;
 }

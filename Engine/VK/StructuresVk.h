@@ -317,4 +317,28 @@ inline VkPhysicalDeviceShadingRateImagePropertiesNV PhysicalDeviceShadingRateIma
 	return physicalDeviceShadingRateImageProperties;
 }
 
+
+inline VkDebugUtilsMessengerCreateInfoEXT DebugUtilsMessengerCreateInfo()
+{
+	VkDebugUtilsMessengerCreateInfoEXT debugUtilsMessengerCreateInfo{};
+	debugUtilsMessengerCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+	debugUtilsMessengerCreateInfo.pNext = nullptr;
+	debugUtilsMessengerCreateInfo.pfnUserCallback = nullptr;
+	debugUtilsMessengerCreateInfo.pUserData = nullptr;
+	return debugUtilsMessengerCreateInfo;
+}
+
+
+inline VkValidationFeaturesEXT ValidationFeatures()
+{
+	VkValidationFeaturesEXT validationFeatures{};
+	validationFeatures.sType = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
+	validationFeatures.pNext = nullptr;
+	validationFeatures.enabledValidationFeatureCount = 0;
+	validationFeatures.pEnabledValidationFeatures = nullptr;
+	validationFeatures.disabledValidationFeatureCount = 0;
+	validationFeatures.pDisabledValidationFeatures = nullptr;
+	return validationFeatures;
+}
+
 } // namespace Kodiak

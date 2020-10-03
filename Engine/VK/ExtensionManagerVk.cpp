@@ -35,3 +35,37 @@ void ExtensionManager::RegisterExtension(IExtension* extension)
 	m_extensionList.push_back(extension);
 	m_extensionNameMap.insert(make_pair(extension->GetName(), extension));
 }
+
+
+vector<const char*> ExtensionManager::GetEnabledExtensionNames() const
+{
+	vector<const char*> extensionNames;
+
+	for (const auto extension : m_extensionList)
+	{
+		if (extension->IsEnabled())
+		{
+			extensionNames.push_back(extension->GetName());
+		}
+	}
+
+	return extensionNames;
+}
+
+
+bool ExtensionManager::EnableExtension(const string& extensionName, DeviceFeatures& features, DeviceProperties& properties)
+{
+	auto nameExtensionPair = m_extensionNameMap.find(extensionName);
+	if (nameExtensionPair != m_extensionNameMap.end())
+	{
+		auto extension = nameExtensionPair->second;
+
+		if (extension->IsAvailable())
+		{
+			extension->Enable(features, properties);
+			return extension->IsEnabled();
+		}
+	}
+
+	return false;
+}

@@ -86,8 +86,17 @@
     <ClInclude Include="VK\ExtensionManagerVk.h">
       <Filter>Graphics\VK</Filter>
     </ClInclude>
-    <ClInclude Include="VK\ExtensionsVk.h">
-      <Filter>Graphics\VK</Filter>
+    <ClInclude Include="VK\Extensions\EXT\DebugUtilsEXT.h">
+      <Filter>Graphics\VK\Extensions\EXT</Filter>
+    </ClInclude>
+    <ClInclude Include="VK\Extensions\AMD\BufferMarkerAMD.h">
+      <Filter>Graphics\VK\Extensions\AMD</Filter>
+    </ClInclude>
+    <ClInclude Include="VK\Extensions\IExtensionVk.h">
+      <Filter>Graphics\VK\Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="VK\Extensions\EXT\ValidationFeaturesEXT.h">
+      <Filter>Graphics\VK\Extensions\EXT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,8 +134,17 @@
     <ClCompile Include="VK\ExtensionManagerVk.cpp">
       <Filter>Graphics\VK</Filter>
     </ClCompile>
-    <ClCompile Include="VK\ExtensionsVk.cpp">
+    <ClCompile Include="VK\GraphicsDevice_DebugVk.cpp">
       <Filter>Graphics\VK</Filter>
+    </ClCompile>
+    <ClCompile Include="VK\Extensions\EXT\DebugUtilsEXT.cpp">
+      <Filter>Graphics\VK\Extensions\EXT</Filter>
+    </ClCompile>
+    <ClCompile Include="VK\Extensions\AMD\BufferMarkerAMD.cpp">
+      <Filter>Graphics\VK\Extensions\AMD</Filter>
+    </ClCompile>
+    <ClCompile Include="VK\Extensions\EXT\ValidationFeaturesEXT.cpp">
+      <Filter>Graphics\VK\Extensions\EXT</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +159,21 @@
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{7906b418-7c90-42d7-9e39-8126876980e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK\Extensions">
+      <UniqueIdentifier>{12ae8a32-b269-4f1b-8ef8-711b96776475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK\Extensions\EXT">
+      <UniqueIdentifier>{5f711376-d3df-46dc-9529-8d587fe7c7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK\Extensions\KHR">
+      <UniqueIdentifier>{d1eb1303-3c97-460b-a554-71c5afdead29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK\Extensions\AMD">
+      <UniqueIdentifier>{91180e42-ff6e-404e-8e64-179007a94370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VK\Extensions\NV">
+      <UniqueIdentifier>{a243f586-6c90-40ca-9218-9c2d64f0de27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

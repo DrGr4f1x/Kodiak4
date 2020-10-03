@@ -44,6 +44,22 @@ shared_ptr<PhysicalDeviceRef> PhysicalDeviceRef::Create(const shared_ptr<Instanc
 }
 
 
+DebugUtilsMessengerRef::~DebugUtilsMessengerRef()
+{
+#if ENABLE_VULKAN_VALIDATION
+	extern PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessenger;
+	vkDestroyDebugUtilsMessenger(*Get<InstanceRef>(), m_messenger, nullptr);
+#endif
+	m_messenger = VK_NULL_HANDLE;
+}
+
+
+shared_ptr<DebugUtilsMessengerRef> DebugUtilsMessengerRef::Create(const shared_ptr<InstanceRef>& instance, VkDebugUtilsMessengerEXT messenger)
+{
+	shared_ptr<DebugUtilsMessengerRef> ptr(new DebugUtilsMessengerRef(instance, messenger));
+	return ptr;
+}
+
 #if 0
 SurfaceRef::~SurfaceRef()
 {
@@ -115,23 +131,6 @@ SemaphoreRef::~SemaphoreRef()
 shared_ptr<SemaphoreRef> SemaphoreRef::Create(const shared_ptr<DeviceRef>& device, VkSemaphore semaphore)
 {
 	shared_ptr<SemaphoreRef> ptr(new SemaphoreRef(device, semaphore));
-	return ptr;
-}
-
-
-DebugReportCallbackRef::~DebugReportCallbackRef()
-{
-#if ENABLE_VULKAN_VALIDATION
-	extern PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallback;
-	vkDestroyDebugReportCallback(*Get<InstanceRef>(), m_callback, nullptr);
-#endif
-	m_callback = VK_NULL_HANDLE;
-}
-
-
-shared_ptr<DebugReportCallbackRef> DebugReportCallbackRef::Create(const shared_ptr<InstanceRef>& instance, VkDebugReportCallbackEXT callback)
-{
-	shared_ptr<DebugReportCallbackRef> ptr(new DebugReportCallbackRef(instance, callback));
 	return ptr;
 }
 

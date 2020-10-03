@@ -64,6 +64,8 @@ private:
 	void SelectPhysicalDevice();
 	void GetPhysicalDeviceFeatures();
 	void EnableApplicationFeatures();
+	void InitializeDebugMarkup();
+	void InitializeValidation();
 
 	void EnableFeatures(bool required);
 
@@ -92,6 +94,10 @@ private:
 
 	VkPhysicalDeviceMemoryProperties m_memoryProperties{};
 	std::vector<VkQueueFamilyProperties> m_queueFamilies;
+
+#if ENABLE_VULKAN_VALIDATION
+	std::shared_ptr<DebugUtilsMessengerRef> m_debugUtilsMessenger;
+#endif
 };
 
 } // namespace Kodiak

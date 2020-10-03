@@ -10,7 +10,15 @@
 
 #pragma once
 
-#include "ExtensionsVk.h"
+#include "VK\Extensions\IExtensionVk.h"
+
+// AMD
+#include "VK\Extensions\AMD\BufferMarkerAMD.h"
+
+// EXT
+#include "VK\Extensions\EXT\DebugUtilsEXT.h"
+#include "VK\Extensions\EXT\ValidationFeaturesEXT.h"
+
 
 namespace Kodiak
 {
@@ -23,8 +31,15 @@ class ExtensionManager
 public:
 	void SetExtensionAvailability(const std::vector<VkExtensionProperties>& extensions);
 	void RegisterExtension(IExtension* extension);
+	std::vector<const char*> GetEnabledExtensionNames() const;
+	bool EnableExtension(const std::string& extensionName, DeviceFeatures& features, DeviceProperties& properties);
 
+	// AMD
 	BufferMarkerAMD bufferMarkerAMD{ this };
+
+	// EXT
+	DebugUtilsEXT debugUtilsEXT{ this };
+	ValidationFeaturesEXT validationFeaturesEXT{ this };
 };
 
 } // namespace Kodiak

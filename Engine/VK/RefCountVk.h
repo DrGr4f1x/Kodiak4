@@ -123,6 +123,24 @@ private:
 };
 
 
+class DebugUtilsMessengerRef : public Reference<InstanceRef>, public NonCopyable
+{
+public:
+	virtual ~DebugUtilsMessengerRef();
+
+	static std::shared_ptr<DebugUtilsMessengerRef> Create(const std::shared_ptr<InstanceRef>& instance, VkDebugUtilsMessengerEXT messenger);
+
+	operator VkDebugUtilsMessengerEXT() { return m_messenger; }
+
+private:
+	DebugUtilsMessengerRef(const std::shared_ptr<InstanceRef>& instance, VkDebugUtilsMessengerEXT messenger)
+		: Reference(instance)
+		, m_messenger(messenger)
+	{}
+
+private:
+	VkDebugUtilsMessengerEXT m_messenger{ VK_NULL_HANDLE };
+};
 #if 0
 class SurfaceRef : public Reference<InstanceRef>, public NonCopyable
 {
@@ -229,26 +247,6 @@ private:
 
 private:
 	VkSemaphore m_semaphore{ VK_NULL_HANDLE };
-};
-
-
-class DebugReportCallbackRef : public Reference<InstanceRef>, public NonCopyable
-{
-public:
-	virtual ~DebugReportCallbackRef();
-
-	static std::shared_ptr<DebugReportCallbackRef> Create(const std::shared_ptr<InstanceRef>& instance, VkDebugReportCallbackEXT callback);
-
-	operator VkDebugReportCallbackEXT() { return m_callback; }
-
-private:
-	DebugReportCallbackRef(const std::shared_ptr<InstanceRef>& instance, VkDebugReportCallbackEXT callback)
-		: Reference(instance)
-		, m_callback(callback)
-	{}
-
-private:
-	VkDebugReportCallbackEXT m_callback{ VK_NULL_HANDLE };
 };
 
 

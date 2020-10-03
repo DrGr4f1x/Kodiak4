@@ -17,8 +17,9 @@ namespace Kodiak
 class FeatureProxy
 {
 public:
-	FeatureProxy(const DeviceFeatures& supportedFeatures, DeviceFeatures& enabledFeatures, DeviceProperties& properties, ExtensionManager& extensionManager)
-		: supportedDeviceFeatures(supportedFeatures)
+	FeatureProxy(VkInstance instance, const DeviceFeatures& supportedFeatures, DeviceFeatures& enabledFeatures, DeviceProperties& properties, ExtensionManager& extensionManager)
+		: instance(instance)
+		, supportedDeviceFeatures(supportedFeatures)
 		, enabledDeviceFeatures(enabledFeatures)
 		, deviceProperties(properties)
 		, extensionManager(extensionManager)
@@ -32,6 +33,9 @@ public:
 		, properties1_1(deviceProperties.deviceProperties1_1)
 		, properties1_2(deviceProperties.deviceProperties1_2)
 	{}
+
+	// Vulkan object pointers
+	VkInstance instance{ VK_NULL_HANDLE };
 
 	// References to the feature and properties structures from the device
 	const DeviceFeatures& supportedDeviceFeatures;
@@ -287,13 +291,6 @@ inline bool EnableShaderFloat64(FeatureProxy& proxy)
 }
 
 
-inline bool EnableShaderFloat16(FeatureProxy& proxy)
-{
-	proxy.enabledFeatures1_2.shaderFloat16 = proxy.supportedFeatures1_2.shaderFloat16;
-	return proxy.enabledFeatures1_2.shaderFloat16;
-}
-
-
 inline bool EnableShaderInt64(FeatureProxy& proxy)
 {
 	proxy.enabledFeatures.shaderInt64 = proxy.supportedFeatures.shaderInt64;
@@ -308,24 +305,56 @@ inline bool EnableShaderInt16(FeatureProxy& proxy)
 }
 
 
+inline bool EnableVariableMultisampleRate(FeatureProxy& proxy)
+{
+	proxy.enabledFeatures.variableMultisampleRate = proxy.supportedFeatures.variableMultisampleRate;
+	return proxy.enabledFeatures.variableMultisampleRate;
+}
+
+
+// Vulkan 1.1 features
+
+// Vulkan 1.2 features
+
+inline bool EnableShaderFloat16(FeatureProxy& proxy)
+{
+	proxy.enabledFeatures1_2.shaderFloat16 = proxy.supportedFeatures1_2.shaderFloat16;
+	return proxy.enabledFeatures1_2.shaderFloat16;
+}
+
+
 inline bool EnableShaderInt8(FeatureProxy& proxy)
 {
 	proxy.enabledFeatures1_2.shaderInt8 = proxy.supportedFeatures1_2.shaderInt8;
 	return proxy.enabledFeatures1_2.shaderInt8;
 }
 
-// Vulkan 1.1 features
 
-// Vulkan 1.2 features
-
-// Vulkan extensions
+// AMD extensions
 
 inline bool EnableBufferMarkerAMD(FeatureProxy& proxy)
 {
 	if (proxy.extensionManager.bufferMarkerAMD.IsAvailable())
 	{
-		proxy.extensionManager.bufferMarkerAMD.Enable(proxy.enabledDeviceFeatures, proxy.deviceProperties);
-		return proxy.extensionManager.bufferMarkerAMD.IsEnabled();
+		return proxy.extensionManager.EnableExtension(
+			proxy.extensionManager.bufferMarkerAMD.GetName(),
+			proxy.enabledDeviceFeatures, 
+			proxy.deviceProperties);
+	}
+	return false;
+}
+
+
+// EXT extensions
+
+inline bool EnableDebugUtilsEXT(FeatureProxy& proxy)
+{
+	if (proxy.extensionManager.debugUtilsEXT.IsAvailable())
+	{
+		return proxy.extensionManager.EnableExtension(
+			proxy.extensionManager.debugUtilsEXT.GetName(),
+			proxy.enabledDeviceFeatures,
+			proxy.deviceProperties);
 	}
 	return false;
 }
