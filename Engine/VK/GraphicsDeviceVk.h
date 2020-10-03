@@ -20,9 +20,9 @@ struct DeviceProperties
 {
 	DeviceProperties();
 
-	VkPhysicalDeviceProperties2 deviceProperties2;			// Base Vulkan 1.0 properties
-	VkPhysicalDeviceVulkan11Properties deviceProperties1_1; // Vulkan 1.1 properties
-	VkPhysicalDeviceVulkan12Properties deviceProperties1_2; // Vulkan 1.2 properties
+	VkPhysicalDeviceProperties2			deviceProperties2;		// Base Vulkan 1.0 properties
+	VkPhysicalDeviceVulkan11Properties	deviceProperties1_1;	// Vulkan 1.1 properties
+	VkPhysicalDeviceVulkan12Properties	deviceProperties1_2;	// Vulkan 1.2 properties
 	void** ppNext{ nullptr };
 
 	void ResetPNextChain();
@@ -60,13 +60,18 @@ public:
 	void Finalize();
 
 private:
+	// High-level methods for each stage of Vulkan instance and device initialization
 	void CreateInstance();
 	void SelectPhysicalDevice();
+	void CreateLogicalDevice();
+
+	// Helper methods for specific parts of the initialization flow
 	void GetPhysicalDeviceFeatures();
 	void EnableApplicationFeatures();
-	void InitializeDebugMarkup();
-	void InitializeValidation();
+	void InitializeExtensions();
+	uint32_t GetQueueFamilyIndex(VkQueueFlags queueFlags) const;
 
+	// Helper method for enabling specific required or optional device features
 	void EnableFeatures(bool required);
 
 private:
@@ -85,6 +90,7 @@ private:
 	// Vulkan members
 	std::shared_ptr<InstanceRef> m_instance;
 	std::shared_ptr<PhysicalDeviceRef> m_physicalDevice;
+	std::shared_ptr<DeviceRef> m_device;
 
 	// Device features and properties
 	DeviceFeatures m_supportedFeatures;
@@ -93,7 +99,13 @@ private:
 	ExtensionManager m_extensions;
 
 	VkPhysicalDeviceMemoryProperties m_memoryProperties{};
-	std::vector<VkQueueFamilyProperties> m_queueFamilies;
+	std::vector<VkQueueFamilyProperties> m_queueFamilyProperties;
+	struct
+	{
+		uint32_t graphics;
+		uint32_t compute;
+		uint32_t transfer;
+	} m_queueFamilyIndices;
 
 #if ENABLE_VULKAN_VALIDATION
 	std::shared_ptr<DebugUtilsMessengerRef> m_debugUtilsMessenger;

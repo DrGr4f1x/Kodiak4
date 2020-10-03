@@ -134,9 +134,6 @@
     <ClCompile Include="VK\ExtensionManagerVk.cpp">
       <Filter>Graphics\VK</Filter>
     </ClCompile>
-    <ClCompile Include="VK\GraphicsDevice_DebugVk.cpp">
-      <Filter>Graphics\VK</Filter>
-    </ClCompile>
     <ClCompile Include="VK\Extensions\EXT\DebugUtilsEXT.cpp">
       <Filter>Graphics\VK\Extensions\EXT</Filter>
     </ClCompile>

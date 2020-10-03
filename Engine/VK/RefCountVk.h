@@ -160,6 +160,7 @@ private:
 private:
 	VkSurfaceKHR m_surface{ VK_NULL_HANDLE };
 };
+#endif
 
 
 class DeviceRef : public Reference<PhysicalDeviceRef>, public NonCopyable
@@ -182,6 +183,7 @@ private:
 };
 
 
+#if 0
 class AllocatorRef : public Reference<InstanceRef, PhysicalDeviceRef, DeviceRef>, public NonCopyable
 {
 public:

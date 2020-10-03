@@ -23,6 +23,25 @@ using namespace Kodiak;
 using namespace std;
 
 
+// Extension function pointers
+#if ENABLE_VULKAN_DEBUG_MARKUP || ENABLE_VULKAN_VALIDATION
+PFN_vkCmdBeginDebugUtilsLabelEXT		vkCmdBeginDebugUtilsLabel = nullptr;
+PFN_vkCmdEndDebugUtilsLabelEXT			vkCmdEndDebugUtilsLabel = nullptr;
+PFN_vkCmdInsertDebugUtilsLabelEXT		vkCmdInsertDebugUtilsLabel = nullptr;
+PFN_vkQueueBeginDebugUtilsLabelEXT		vkQueueBeginDebugUtilsLabel = nullptr;
+PFN_vkQueueEndDebugUtilsLabelEXT		vkQueueEndDebugUtilsLabel = nullptr;
+PFN_vkQueueInsertDebugUtilsLabelEXT		vkQueueInsertDebugUtilsLabel = nullptr;
+PFN_vkSetDebugUtilsObjectNameEXT		vkSetDebugUtilsObjectName = nullptr;
+PFN_vkSetDebugUtilsObjectTagEXT			vkSetDebugUtilsObjectTag = nullptr;
+#endif
+
+#if ENABLE_VULKAN_VALIDATION
+PFN_vkCreateDebugUtilsMessengerEXT		vkCreateDebugUtilsMessenger = nullptr;
+PFN_vkDestroyDebugUtilsMessengerEXT		vkDestroyDebugUtilsMessenger = nullptr;
+PFN_vkSubmitDebugUtilsMessageEXT		vkSubmitDebugUtilsMessage = nullptr;
+#endif
+
+
 DeviceProperties::DeviceProperties()
 {
 	deviceProperties2 = PhysicalDeviceProperties2();
@@ -94,8 +113,8 @@ void GraphicsDevice::Initialize(
 	GetPhysicalDeviceFeatures();
 	EnableApplicationFeatures();
 
-	InitializeDebugMarkup();
-	InitializeValidation();
+	CreateLogicalDevice();
+	InitializeExtensions();
 }
 
 
@@ -196,6 +215,71 @@ void GraphicsDevice::SelectPhysicalDevice()
 }
 
 
+void GraphicsDevice::CreateLogicalDevice()
+{
+	// Desired queues need to be requested upon logical device creation
+	// Due to differing queue family configurations of Vulkan implementations this can be a bit tricky, especially if the application
+	// requests different queue types
+
+	vector<VkDeviceQueueCreateInfo> queueCreateInfos{};
+
+	// Get queue family indices for the requested queue family types
+	// Note that the indices may overlap depending on the implementation
+
+	const float defaultQueuePriority = 0.0f;
+
+	// Graphics queue
+	m_queueFamilyIndices.graphics = GetQueueFamilyIndex(VK_QUEUE_GRAPHICS_BIT);
+	VkDeviceQueueCreateInfo queueInfo = DeviceQueueCreateInfo();
+	queueInfo.queueFamilyIndex = m_queueFamilyIndices.graphics;
+	queueInfo.queueCount = 1;
+	queueInfo.pQueuePriorities = &defaultQueuePriority;
+	queueCreateInfos.push_back(queueInfo);
+
+	// Dedicated compute queue
+	m_queueFamilyIndices.compute = GetQueueFamilyIndex(VK_QUEUE_COMPUTE_BIT);
+	if (m_queueFamilyIndices.compute != m_queueFamilyIndices.graphics)
+	{
+		// If compute family index differs, we need an additional queue create info for the compute queue
+		VkDeviceQueueCreateInfo queueInfo = DeviceQueueCreateInfo();
+		queueInfo.queueFamilyIndex = m_queueFamilyIndices.compute;
+		queueInfo.queueCount = 1;
+		queueInfo.pQueuePriorities = &defaultQueuePriority;
+		queueCreateInfos.push_back(queueInfo);
+	}
+
+	// Dedicated transfer queue
+	m_queueFamilyIndices.transfer = GetQueueFamilyIndex(VK_QUEUE_TRANSFER_BIT);
+	if ((m_queueFamilyIndices.transfer != m_queueFamilyIndices.graphics) && (m_queueFamilyIndices.transfer != m_queueFamilyIndices.compute))
+	{
+		// If compute family index differs, we need an additional queue create info for the transfer queue
+		VkDeviceQueueCreateInfo queueInfo = DeviceQueueCreateInfo();
+		queueInfo.queueFamilyIndex = m_queueFamilyIndices.transfer;
+		queueInfo.queueCount = 1;
+		queueInfo.pQueuePriorities = &defaultQueuePriority;
+		queueCreateInfos.push_back(queueInfo);
+	}
+
+	// Get the enabled device extensions
+	vector<const char*> extensionNames = m_extensions.GetEnabledExtensionNames();
+
+	// Create the device
+	VkDeviceCreateInfo createInfo = DeviceCreateInfo();
+	createInfo.pNext = &m_enabledFeatures.deviceFeatures2;
+	createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
+	createInfo.pQueueCreateInfos = queueCreateInfos.data();
+	createInfo.pEnabledFeatures = nullptr;
+	createInfo.enabledLayerCount = 0;
+	createInfo.ppEnabledLayerNames = nullptr;
+	createInfo.enabledExtensionCount = (uint32_t)extensionNames.size();
+	createInfo.ppEnabledExtensionNames = extensionNames.data();
+
+	VkDevice vkDevice{ VK_NULL_HANDLE };
+	ThrowIfFailed(vkCreateDevice(*m_physicalDevice, &createInfo, nullptr, &vkDevice));
+	m_device = DeviceRef::Create(m_physicalDevice, vkDevice);
+}
+
+
 void GraphicsDevice::GetPhysicalDeviceFeatures()
 {
 	// Get memory properties
@@ -208,8 +292,8 @@ void GraphicsDevice::GetPhysicalDeviceFeatures()
 	m_supportedFeatures.extensions = EnumerateDeviceExtensions(*m_physicalDevice);
 	m_extensions.SetExtensionAvailability(m_supportedFeatures.extensions);
 
-	// Get queue families
-	m_queueFamilies = EnumerateQueueFamilies(*m_physicalDevice);
+	// Get queue family properties
+	m_queueFamilyProperties = EnumerateQueueFamilies(*m_physicalDevice);
 }
 
 
@@ -237,6 +321,58 @@ void GraphicsDevice::EnableApplicationFeatures()
 #if ENABLE_VULKAN_VALIDATION
 	m_extensions.EnableExtension(m_extensions.validationFeaturesEXT.GetName(), m_enabledFeatures, m_deviceProperties);
 #endif
+}
+
+
+void GraphicsDevice::InitializeExtensions()
+{}
+
+
+uint32_t GraphicsDevice::GetQueueFamilyIndex(VkQueueFlags queueFlags) const
+{
+	uint32_t index = 0;
+
+	// Dedicated queue for compute
+	// Try to find a queue family index that supports compute but not graphics
+	if (queueFlags & VK_QUEUE_COMPUTE_BIT)
+	{
+		for (const auto& properties : m_queueFamilyProperties)
+		{
+			if ((properties.queueFlags & queueFlags) && ((properties.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0))
+			{
+				return index;
+			}
+			++index;
+		}
+	}
+
+	// Dedicated queue for transfer
+	// Try to find a queue family index that supports transfer but not graphics and compute
+	if (queueFlags & VK_QUEUE_TRANSFER_BIT)
+	{
+		index = 0;
+		for (const auto& properties : m_queueFamilyProperties)
+		{
+			if ((properties.queueFlags & queueFlags) && ((properties.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0) && ((properties.queueFlags & VK_QUEUE_COMPUTE_BIT) == 0))
+			{
+				return index;
+			}
+			++index;
+		}
+	}
+
+	// For other queue types or if no separate compute queue is present, return the first one to support the requested flags
+	index = 0;
+	for (const auto& properties : m_queueFamilyProperties)
+	{
+		if (properties.queueFlags & queueFlags)
+		{
+			return index;
+		}
+		++index;
+	}
+
+	throw runtime_error("Could not find a matching queue family index");
 }
 
 

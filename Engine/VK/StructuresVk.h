@@ -30,6 +30,24 @@ inline VkInstanceCreateInfo InstanceCreateInfo()
 }
 
 
+inline VkDeviceQueueCreateInfo DeviceQueueCreateInfo()
+{
+	VkDeviceQueueCreateInfo deviceQueueCreateInfo{};
+	deviceQueueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	deviceQueueCreateInfo.pNext = nullptr;
+	return deviceQueueCreateInfo;
+}
+
+
+inline VkDeviceCreateInfo DeviceCreateInfo()
+{
+	VkDeviceCreateInfo deviceCreateInfo{};
+	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	deviceCreateInfo.pNext = nullptr;
+	return deviceCreateInfo;
+}
+
+
 inline VkPhysicalDeviceFeatures2 PhysicalDeviceFeatures2()
 {
 	VkPhysicalDeviceFeatures2 physicalDeviceFeatures2{};

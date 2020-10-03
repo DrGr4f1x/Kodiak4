@@ -10,7 +10,7 @@
 
 #include "Stdafx.h"
 
-#include "RefCountVk.h"
+#include "VK\RefCountVk.h"
 
 
 using namespace Kodiak;
@@ -73,6 +73,7 @@ shared_ptr<SurfaceRef> SurfaceRef::Create(const shared_ptr<InstanceRef>& instanc
 	shared_ptr<SurfaceRef> ptr(new SurfaceRef(instance, surface));
 	return ptr;
 }
+#endif
 
 
 DeviceRef::~DeviceRef()
@@ -89,6 +90,7 @@ shared_ptr<DeviceRef> DeviceRef::Create(const shared_ptr<PhysicalDeviceRef>& phy
 }
 
 
+#if 0
 AllocatorRef::~AllocatorRef()
 {
 	vmaDestroyAllocator(m_allocator);
