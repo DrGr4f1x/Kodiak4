@@ -31,6 +31,8 @@ public:
 
 protected:
 	virtual void Enable(DeviceFeatures& features, DeviceProperties& properties) = 0;
+	virtual void Initialize(std::shared_ptr<DeviceRef>& deviceRef) 
+	{}
 
 protected:
 	bool m_isAvailable{ false };

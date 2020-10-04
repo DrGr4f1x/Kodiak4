@@ -33,6 +33,7 @@ public:
 	void RegisterExtension(IExtension* extension);
 	std::vector<const char*> GetEnabledExtensionNames() const;
 	bool EnableExtension(const std::string& extensionName, DeviceFeatures& features, DeviceProperties& properties);
+	void InitializeExtensions(std::shared_ptr<DeviceRef>& deviceRef);
 
 	// AMD
 	BufferMarkerAMD bufferMarkerAMD{ this };

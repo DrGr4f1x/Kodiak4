@@ -325,7 +325,14 @@ void GraphicsDevice::EnableApplicationFeatures()
 
 
 void GraphicsDevice::InitializeExtensions()
-{}
+{
+	m_extensions.InitializeExtensions(m_device);
+
+	// Create the debug callback for validation
+#if ENABLE_VULKAN_VALIDATION
+
+#endif
+}
 
 
 uint32_t GraphicsDevice::GetQueueFamilyIndex(VkQueueFlags queueFlags) const

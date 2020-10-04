@@ -23,6 +23,7 @@ public:
 	const char* GetName() const final { return VK_EXT_DEBUG_UTILS_EXTENSION_NAME; }
 
 	void Enable(DeviceFeatures& features, DeviceProperties& properties) final;
+	void Initialize(std::shared_ptr<DeviceRef>& deviceRef) final;
 };
 
 } // namespace Kodiak

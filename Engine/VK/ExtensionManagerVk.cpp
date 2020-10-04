@@ -69,3 +69,15 @@ bool ExtensionManager::EnableExtension(const string& extensionName, DeviceFeatur
 
 	return false;
 }
+
+
+void ExtensionManager::InitializeExtensions(shared_ptr<DeviceRef>& deviceRef)
+{
+	for (auto extension : m_extensionList)
+	{
+		if (extension->IsEnabled())
+		{
+
+		}
+	}
+}
