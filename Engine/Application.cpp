@@ -44,6 +44,7 @@ Application::Application(const string& name, uint32_t width, uint32_t height)
 
 void Application::Run()
 {
+	// TODO: Move this after Configure in Initialize (so that the app can specify the resolution in Configure)
 	CreateAppWindow();
 
 	Initialize();

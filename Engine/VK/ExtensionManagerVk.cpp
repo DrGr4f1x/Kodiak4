@@ -77,7 +77,7 @@ void ExtensionManager::InitializeExtensions(shared_ptr<DeviceRef>& deviceRef)
 	{
 		if (extension->IsEnabled())
 		{
-
+			extension->Initialize(deviceRef);
 		}
 	}
 }

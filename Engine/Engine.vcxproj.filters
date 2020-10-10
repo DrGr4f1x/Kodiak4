@@ -98,6 +98,12 @@
     <ClInclude Include="VK\Extensions\EXT\ValidationFeaturesEXT.h">
       <Filter>Graphics\VK\Extensions\EXT</Filter>
     </ClInclude>
+    <ClInclude Include="Extern\VulkanMemoryAllocator\vk_mem_alloc.h">
+      <Filter>Graphics\VK\VulkanMemoryAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="VK\Extensions\KHR\SwapchainKHR.h">
+      <Filter>Graphics\VK\Extensions\KHR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -143,6 +149,9 @@
     <ClCompile Include="VK\Extensions\EXT\ValidationFeaturesEXT.cpp">
       <Filter>Graphics\VK\Extensions\EXT</Filter>
     </ClCompile>
+    <ClCompile Include="VK\Extensions\KHR\SwapchainKHR.cpp">
+      <Filter>Graphics\VK\Extensions\KHR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -172,10 +181,18 @@
     <Filter Include="Graphics\VK\Extensions\NV">
       <UniqueIdentifier>{a243f586-6c90-40ca-9218-9c2d64f0de27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\VK\VulkanMemoryAllocator">
+      <UniqueIdentifier>{dfd9d848-0bf1-4126-ad0c-20336fcccefa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\Functions.inl">
       <Filter>Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Extern\VulkanMemoryAllocator\vk_mem_alloc.natvis">
+      <Filter>Graphics\VK\VulkanMemoryAllocator</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>

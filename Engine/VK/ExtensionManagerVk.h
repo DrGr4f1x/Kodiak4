@@ -19,6 +19,9 @@
 #include "VK\Extensions\EXT\DebugUtilsEXT.h"
 #include "VK\Extensions\EXT\ValidationFeaturesEXT.h"
 
+// KHR
+#include "VK\Extensions\KHR\SwapchainKHR.h"
+
 
 namespace Kodiak
 {
@@ -41,6 +44,9 @@ public:
 	// EXT
 	DebugUtilsEXT debugUtilsEXT{ this };
 	ValidationFeaturesEXT validationFeaturesEXT{ this };
+
+	// KHR
+	SwapchainKHR swapchainKHR{ this };
 };
 
 } // namespace Kodiak

@@ -101,6 +101,42 @@ std::vector<VkQueueFamilyProperties> EnumerateQueueFamilies(VkPhysicalDevice dev
 }
 
 
+std::vector<VkSurfaceFormatKHR> EnumerateSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface)
+{
+	std::vector<VkSurfaceFormatKHR> surfaceFormats;
+	uint32_t numFormats = 0;
+
+	ThrowIfFailed(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &numFormats, nullptr));
+	assert(numFormats > 0);
+
+	if (numFormats > 0)
+	{
+		surfaceFormats.resize(numFormats);
+		ThrowIfFailed(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &numFormats, surfaceFormats.data()));
+	}
+
+	return surfaceFormats;
+}
+
+
+std::vector<VkPresentModeKHR> EnumeratePresentModes(VkPhysicalDevice device, VkSurfaceKHR surface)
+{
+	std::vector<VkPresentModeKHR> presentModes;
+	uint32_t numPresentModes = 0;
+
+	ThrowIfFailed(vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &numPresentModes, nullptr));
+	assert(numPresentModes > 0);
+
+	if (numPresentModes > 0)
+	{
+		presentModes.resize(numPresentModes);
+		ThrowIfFailed(vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &numPresentModes, presentModes.data()));
+	}
+
+	return presentModes;
+}
+
+
 void LogApplicationInfo(const VkApplicationInfo& appInfo)
 {
 	LOG_NOTICE << "  Vulkan application info";

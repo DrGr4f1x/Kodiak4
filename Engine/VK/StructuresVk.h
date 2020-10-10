@@ -48,6 +48,24 @@ inline VkDeviceCreateInfo DeviceCreateInfo()
 }
 
 
+inline VkWin32SurfaceCreateInfoKHR Win32SurfaceCreateInfo()
+{
+	VkWin32SurfaceCreateInfoKHR win32SurfaceCreateInfo{};
+	win32SurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+	win32SurfaceCreateInfo.pNext = nullptr;
+	return win32SurfaceCreateInfo;
+}
+
+
+inline VkSwapchainCreateInfoKHR SwapchainCreateInfo()
+{
+	VkSwapchainCreateInfoKHR swapchainCreateInfo{};
+	swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	swapchainCreateInfo.pNext = nullptr;
+	return swapchainCreateInfo;
+}
+
+
 inline VkPhysicalDeviceFeatures2 PhysicalDeviceFeatures2()
 {
 	VkPhysicalDeviceFeatures2 physicalDeviceFeatures2{};

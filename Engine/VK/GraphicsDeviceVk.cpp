@@ -18,6 +18,9 @@
 #include "StructuresVk.h"
 #include "UtilityVk.h"
 
+#define VMA_IMPLEMENTATION
+#include "Extern\VulkanMemoryAllocator\vk_mem_alloc.h"
+
 
 using namespace Kodiak;
 using namespace std;
@@ -40,6 +43,13 @@ PFN_vkCreateDebugUtilsMessengerEXT		vkCreateDebugUtilsMessenger = nullptr;
 PFN_vkDestroyDebugUtilsMessengerEXT		vkDestroyDebugUtilsMessenger = nullptr;
 PFN_vkSubmitDebugUtilsMessageEXT		vkSubmitDebugUtilsMessage = nullptr;
 #endif
+
+PFN_vkAcquireNextImageKHR				vkAcquireNextImage = nullptr;
+PFN_vkAcquireNextImage2KHR				vkAcquireNextImage2 = nullptr;
+PFN_vkCreateSwapchainKHR				vkCreateSwapchain = nullptr;
+PFN_vkDestroySwapchainKHR				vkDestroySwapchain = nullptr;
+PFN_vkGetSwapchainImagesKHR				vkGetSwapchainImages = nullptr;
+PFN_vkQueuePresentKHR					vkQueuePresent = nullptr;
 
 
 DeviceProperties::DeviceProperties()
@@ -115,11 +125,30 @@ void GraphicsDevice::Initialize(
 
 	CreateLogicalDevice();
 	InitializeExtensions();
+
+	m_allocator = CreateAllocator();
+
+	CreateSurface();
+	CreateSwapchain();
 }
 
 
 void GraphicsDevice::Finalize()
 {}
+
+
+shared_ptr<AllocatorRef> GraphicsDevice::CreateAllocator() const
+{
+	VmaAllocatorCreateInfo createInfo = {};
+	createInfo.physicalDevice = *m_physicalDevice;
+	createInfo.device = *m_device;
+
+	VmaAllocator vmaAllocator{ VK_NULL_HANDLE };
+	ThrowIfFailed(vmaCreateAllocator(&createInfo, &vmaAllocator));
+
+	auto allocator = AllocatorRef::Create(m_instance, m_physicalDevice, m_device, vmaAllocator);
+	return allocator;
+}
 
 
 void GraphicsDevice::CreateInstance()
@@ -280,6 +309,217 @@ void GraphicsDevice::CreateLogicalDevice()
 }
 
 
+void GraphicsDevice::CreateSurface()
+{
+	// Create surface
+	VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = Win32SurfaceCreateInfo();
+	surfaceCreateInfo.hinstance = m_hinst;
+	surfaceCreateInfo.hwnd = m_hwnd;
+
+	VkSurfaceKHR vkSurface{ VK_NULL_HANDLE };
+	VkResult res = vkCreateWin32SurfaceKHR(*m_instance, &surfaceCreateInfo, nullptr, &vkSurface);
+
+	if (res != VK_SUCCESS)
+	{
+		Utility::ExitFatal("Could not create surface!", "Fatal error");
+	}
+
+	m_surface = SurfaceRef::Create(m_instance, vkSurface);
+
+	// Get list of supported surface formats
+	vector<VkSurfaceFormatKHR> surfaceFormats = EnumerateSurfaceFormats(*m_physicalDevice, *m_surface);
+
+	// If the surface format list only includes one entry with VK_FORMAT_UNDEFINED,
+	// there is no preferred format, so we assume VK_FORMAT_B8G8R8A8_UNORM
+	if ((surfaceFormats.size() == 1) && (surfaceFormats[0].format == VK_FORMAT_UNDEFINED))
+	{
+		m_colorFormat = MapVulkanFormatToEngine(VK_FORMAT_B8G8R8A8_UNORM);
+		m_colorSpace = surfaceFormats[0].colorSpace;
+	}
+	else
+	{
+		// iterate over the list of available surface format and
+		// check for the presence of VK_FORMAT_B8G8R8A8_UNORM
+		bool found_B8G8R8A8_UNORM = false;
+		for (auto&& surfaceFormat : surfaceFormats)
+		{
+			if (surfaceFormat.format == VK_FORMAT_B8G8R8A8_UNORM)
+			{
+				m_colorFormat = MapVulkanFormatToEngine(surfaceFormat.format);
+				m_colorSpace = surfaceFormat.colorSpace;
+				found_B8G8R8A8_UNORM = true;
+				break;
+			}
+		}
+
+		// in case VK_FORMAT_B8G8R8A8_UNORM is not available
+		// select the first available color format
+		if (!found_B8G8R8A8_UNORM)
+		{
+			m_colorFormat = MapVulkanFormatToEngine(surfaceFormats[0].format);
+			m_colorSpace = surfaceFormats[0].colorSpace;
+		}
+	}
+}
+
+
+void GraphicsDevice::CreateSwapchain()
+{
+	auto oldSwapchain = m_swapchain;
+
+	VkPhysicalDevice physicalDevice = *m_physicalDevice;
+	VkSurfaceKHR surface = *m_surface;
+
+	// Get physical device surface properties and formats
+	VkSurfaceCapabilitiesKHR surfCaps;
+	ThrowIfFailed(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &surfCaps));
+
+	// Check physical device surface support
+	VkBool32 surfaceSupported = VK_FALSE;
+	ThrowIfFailed(vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, m_queueFamilyIndices.graphics, surface, &surfaceSupported));
+	assert(surfaceSupported == VK_TRUE);
+
+	// Get available present modes
+	vector<VkPresentModeKHR> presentModes = EnumeratePresentModes(physicalDevice, surface);
+
+	VkExtent2D swapchainExtent = {};
+	// If width (and height) equals the special value 0xFFFFFFFF, the size of the surface will be set by the swapchain
+	if (surfCaps.currentExtent.width == (uint32_t)-1)
+	{
+		// If the surface size is undefined, the size is set to
+		// the size of the images requested.
+		swapchainExtent.width = m_width;
+		swapchainExtent.height = m_height;
+	}
+	else
+	{
+		// If the surface size is defined, the swap chain size must match
+		swapchainExtent = surfCaps.currentExtent;
+		m_width = surfCaps.currentExtent.width;
+		m_height = surfCaps.currentExtent.height;
+	}
+
+	// Select a present mode for the swapchain
+
+	// The VK_PRESENT_MODE_FIFO_KHR mode must always be present as per spec
+	// This mode waits for the vertical blank ("v-sync")
+	VkPresentModeKHR swapchainPresentMode = VK_PRESENT_MODE_FIFO_KHR;
+
+	// If v-sync is not requested, try to find a mailbox mode
+	// It's the lowest latency non-tearing present mode available
+	if (!m_vsync)
+	{
+		for (size_t i = 0; i < presentModes.size(); ++i)
+		{
+			if (presentModes[i] == VK_PRESENT_MODE_MAILBOX_KHR)
+			{
+				swapchainPresentMode = VK_PRESENT_MODE_MAILBOX_KHR;
+				break;
+			}
+			if ((swapchainPresentMode != VK_PRESENT_MODE_MAILBOX_KHR) && (presentModes[i] == VK_PRESENT_MODE_IMMEDIATE_KHR))
+			{
+				swapchainPresentMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+			}
+		}
+	}
+
+	// Determine the number of images
+	const uint32_t NumSwapChainBuffers = 3; // TODO - Put this somewhere else
+	uint32_t desiredNumberOfSwapchainImages = max(surfCaps.minImageCount + 1, NumSwapChainBuffers);
+	if ((surfCaps.maxImageCount > 0) && (desiredNumberOfSwapchainImages > surfCaps.maxImageCount))
+	{
+		desiredNumberOfSwapchainImages = surfCaps.maxImageCount;
+	}
+
+	// Find the transformation of the surface
+	VkSurfaceTransformFlagBitsKHR preTransform;
+	if (surfCaps.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
+	{
+		// We prefer a non-rotated transform
+		preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+	}
+	else
+	{
+		preTransform = surfCaps.currentTransform;
+	}
+
+	// Find a supported composite alpha format (not all devices support alpha opaque)
+	VkCompositeAlphaFlagBitsKHR compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+	// Simply select the first composite alpha format available
+	vector<VkCompositeAlphaFlagBitsKHR> compositeAlphaFlags =
+	{
+		VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+		VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR,
+		VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR,
+		VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR,
+	};
+
+	for (auto& compositeAlphaFlag : compositeAlphaFlags)
+	{
+		if (surfCaps.supportedCompositeAlpha & compositeAlphaFlag)
+		{
+			compositeAlpha = compositeAlphaFlag;
+			break;
+		};
+	}
+
+	auto vkFormat = static_cast<VkFormat>(m_colorFormat);
+
+	VkImageUsageFlags usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+
+	// Set additional usage flag for blitting from the swapchain images if supported
+	VkFormatProperties formatProps;
+	vkGetPhysicalDeviceFormatProperties(physicalDevice, vkFormat, &formatProps);
+	if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_DST_BIT)
+	{
+		usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+	}
+
+	// Create the swapchain
+	VkSwapchainKHR oldsc = VK_NULL_HANDLE;
+	if (oldSwapchain)
+	{
+		oldsc = *oldSwapchain;
+	}
+
+	VkSwapchainCreateInfoKHR swapchainCreateInfo = SwapchainCreateInfo();
+	swapchainCreateInfo.surface = surface;
+	swapchainCreateInfo.minImageCount = desiredNumberOfSwapchainImages;
+	swapchainCreateInfo.imageFormat = vkFormat;
+	swapchainCreateInfo.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+	swapchainCreateInfo.imageExtent = swapchainExtent;
+	swapchainCreateInfo.imageUsage = usage;
+	swapchainCreateInfo.preTransform = preTransform;
+	swapchainCreateInfo.imageArrayLayers = 1u;
+	swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	swapchainCreateInfo.queueFamilyIndexCount = 0;
+	swapchainCreateInfo.pQueueFamilyIndices = nullptr;
+	swapchainCreateInfo.presentMode = swapchainPresentMode;
+	swapchainCreateInfo.oldSwapchain = oldsc;
+	// Setting clipped to VK_TRUE allows the implementation to discard rendering outside of the surface area
+	swapchainCreateInfo.clipped = VK_TRUE;
+	swapchainCreateInfo.compositeAlpha = compositeAlpha;
+
+	VkSwapchainKHR vkSwapchain{ VK_NULL_HANDLE };
+	ThrowIfFailed(vkCreateSwapchain(*m_device, &swapchainCreateInfo, nullptr, &vkSwapchain));
+	m_swapchain = SwapchainRef::Create(m_device, vkSwapchain);
+
+	// Count actual swapchain images
+	uint32_t imageCount{ 0 };
+	ThrowIfFailed(vkGetSwapchainImages(*m_device, *m_swapchain, &imageCount, nullptr));
+
+	// Get the swap chain images
+	vector<VkImage> images(imageCount);
+	ThrowIfFailed(vkGetSwapchainImages(*m_device, *m_swapchain, &imageCount, images.data()));
+
+	m_swapchainImages.reserve(imageCount);
+	for (auto image : images)
+	{
+		m_swapchainImages.push_back(ImageRef::Create(m_device, image));
+	}
+}
+
+
 void GraphicsDevice::GetPhysicalDeviceFeatures()
 {
 	// Get memory properties
@@ -321,6 +561,9 @@ void GraphicsDevice::EnableApplicationFeatures()
 #if ENABLE_VULKAN_VALIDATION
 	m_extensions.EnableExtension(m_extensions.validationFeaturesEXT.GetName(), m_enabledFeatures, m_deviceProperties);
 #endif
+
+	// Always enable the swapchain extension
+	m_extensions.EnableExtension(m_extensions.swapchainKHR.GetName(), m_enabledFeatures, m_deviceProperties);
 }
 
 

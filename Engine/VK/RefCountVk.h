@@ -141,7 +141,8 @@ private:
 private:
 	VkDebugUtilsMessengerEXT m_messenger{ VK_NULL_HANDLE };
 };
-#if 0
+
+
 class SurfaceRef : public Reference<InstanceRef>, public NonCopyable
 {
 public:
@@ -160,7 +161,6 @@ private:
 private:
 	VkSurfaceKHR m_surface{ VK_NULL_HANDLE };
 };
-#endif
 
 
 class DeviceRef : public Reference<PhysicalDeviceRef>, public NonCopyable
@@ -183,7 +183,6 @@ private:
 };
 
 
-#if 0
 class AllocatorRef : public Reference<InstanceRef, PhysicalDeviceRef, DeviceRef>, public NonCopyable
 {
 public:
@@ -211,7 +210,7 @@ private:
 	VmaAllocator m_allocator{ VK_NULL_HANDLE };
 };
 
-
+#if 0
 class FenceRef : public Reference<DeviceRef>, public NonCopyable
 {
 public:
@@ -250,6 +249,7 @@ private:
 private:
 	VkSemaphore m_semaphore{ VK_NULL_HANDLE };
 };
+#endif
 
 
 class ImageRef : public Reference<DeviceRef, AllocatorRef>, public NonCopyable
@@ -288,6 +288,7 @@ private:
 };
 
 
+
 class SwapchainRef : public Reference<DeviceRef>, public NonCopyable
 {
 public:
@@ -306,6 +307,6 @@ private:
 private:
 	VkSwapchainKHR m_swapchain{ VK_NULL_HANDLE };
 };
-#endif
+
 
 } // namespace Kodiak

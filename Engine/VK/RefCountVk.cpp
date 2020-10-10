@@ -60,7 +60,7 @@ shared_ptr<DebugUtilsMessengerRef> DebugUtilsMessengerRef::Create(const shared_p
 	return ptr;
 }
 
-#if 0
+
 SurfaceRef::~SurfaceRef()
 {
 	vkDestroySurfaceKHR(*Get<InstanceRef>(), m_surface, nullptr);
@@ -73,7 +73,6 @@ shared_ptr<SurfaceRef> SurfaceRef::Create(const shared_ptr<InstanceRef>& instanc
 	shared_ptr<SurfaceRef> ptr(new SurfaceRef(instance, surface));
 	return ptr;
 }
-#endif
 
 
 DeviceRef::~DeviceRef()
@@ -90,7 +89,6 @@ shared_ptr<DeviceRef> DeviceRef::Create(const shared_ptr<PhysicalDeviceRef>& phy
 }
 
 
-#if 0
 AllocatorRef::~AllocatorRef()
 {
 	vmaDestroyAllocator(m_allocator);
@@ -109,6 +107,7 @@ shared_ptr<AllocatorRef> AllocatorRef::Create(
 }
 
 
+#if 0
 FenceRef::~FenceRef()
 {
 	vkDestroyFence(*Get<DeviceRef>(), m_fence, nullptr);
@@ -135,6 +134,7 @@ shared_ptr<SemaphoreRef> SemaphoreRef::Create(const shared_ptr<DeviceRef>& devic
 	shared_ptr<SemaphoreRef> ptr(new SemaphoreRef(device, semaphore));
 	return ptr;
 }
+#endif
 
 
 ImageRef::~ImageRef()
@@ -168,7 +168,8 @@ shared_ptr<ImageRef> ImageRef::Create(
 
 SwapchainRef::~SwapchainRef()
 {
-	vkDestroySwapchainKHR(*Get<DeviceRef>(), m_swapchain, nullptr);
+	extern PFN_vkDestroySwapchainKHR vkDestroySwapchain;
+	vkDestroySwapchain(*Get<DeviceRef>(), m_swapchain, nullptr);
 	m_swapchain = VK_NULL_HANDLE;
 }
 
@@ -178,4 +179,3 @@ shared_ptr<SwapchainRef> SwapchainRef::Create(const shared_ptr<DeviceRef>& devic
 	shared_ptr<SwapchainRef> ptr(new SwapchainRef(device, swapchain));
 	return ptr;
 }
-#endif

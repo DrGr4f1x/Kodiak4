@@ -59,11 +59,16 @@ public:
 		Format depthFormat);
 	void Finalize();
 
+	// Create methods
+	std::shared_ptr<AllocatorRef> CreateAllocator() const;
+
 private:
 	// High-level methods for each stage of Vulkan instance and device initialization
 	void CreateInstance();
 	void SelectPhysicalDevice();
 	void CreateLogicalDevice();
+	void CreateSurface();
+	void CreateSwapchain();
 
 	// Helper methods for specific parts of the initialization flow
 	void GetPhysicalDeviceFeatures();
@@ -91,6 +96,10 @@ private:
 	std::shared_ptr<InstanceRef> m_instance;
 	std::shared_ptr<PhysicalDeviceRef> m_physicalDevice;
 	std::shared_ptr<DeviceRef> m_device;
+	std::shared_ptr<AllocatorRef> m_allocator;
+	std::shared_ptr<SurfaceRef> m_surface;
+	std::shared_ptr<SwapchainRef> m_swapchain;
+	std::vector<std::shared_ptr<ImageRef>> m_swapchainImages;
 
 	// Device features and properties
 	DeviceFeatures m_supportedFeatures;
@@ -106,6 +115,8 @@ private:
 		uint32_t compute;
 		uint32_t transfer;
 	} m_queueFamilyIndices;
+
+	VkColorSpaceKHR m_colorSpace;
 
 #if ENABLE_VULKAN_VALIDATION
 	std::shared_ptr<DebugUtilsMessengerRef> m_debugUtilsMessenger;
