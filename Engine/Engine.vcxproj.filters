@@ -104,6 +104,12 @@
     <ClInclude Include="VK\Extensions\KHR\SwapchainKHR.h">
       <Filter>Graphics\VK\Extensions\KHR</Filter>
     </ClInclude>
+    <ClInclude Include="VK\FunctionsVk.h">
+      <Filter>Graphics\VK</Filter>
+    </ClInclude>
+    <ClInclude Include="VK\LoaderVk.h">
+      <Filter>Graphics\VK</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -151,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="VK\Extensions\KHR\SwapchainKHR.cpp">
       <Filter>Graphics\VK\Extensions\KHR</Filter>
+    </ClCompile>
+    <ClCompile Include="VK\LoaderVk.cpp">
+      <Filter>Graphics\VK</Filter>
+    </ClCompile>
+    <ClCompile Include="VK\FunctionsVk.cpp">
+      <Filter>Graphics\VK</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
