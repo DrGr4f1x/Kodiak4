@@ -344,13 +344,504 @@ void UnmapMemory(VkDevice device, VkDeviceMemory deviceMemory)
 }
 
 
-VkResult FlushMappedMemoryRanges(
+VkResult FlushMappedMemoryRanges(VkDevice device, uint32_t memoryRangeCount, const VkMappedMemoryRange* pMemoryRanges)
+{
+	DECLARE_EXTERN_FUNCTION(vkFlushMappedMemoryRanges);
+	return fp_vkFlushMappedMemoryRanges(device, memoryRangeCount, pMemoryRanges);
+}
+
+
+VkResult InvalidateMappedMemoryRanges(
 	VkDevice device,
 	uint32_t memoryRangeCount,
 	const VkMappedMemoryRange* pMemoryRanges)
 {
-	DECLARE_EXTERN_FUNCTION(vkFlushMappedMemoryRanges);
-	return fp_vkFlushMappedMemoryRanges(device, memoryRangeCount, pMemoryRanges);
+	DECLARE_EXTERN_FUNCTION(vkInvalidateMappedMemoryRanges);
+	return fp_vkInvalidateMappedMemoryRanges(device, memoryRangeCount, pMemoryRanges);
+}
+
+
+void GetDeviceMemoryCommitment(VkDevice device, VkDeviceMemory memory, VkDeviceSize* pCommittedMemoryInBytes)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetDeviceMemoryCommitment);
+	fp_vkGetDeviceMemoryCommitment(device, memory, pCommittedMemoryInBytes);
+}
+
+
+VkResult BindBufferMemory(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize memoryOffset)
+{
+	DECLARE_EXTERN_FUNCTION(vkBindBufferMemory);
+	return fp_vkBindBufferMemory(device, buffer, memory, memoryOffset);
+}
+
+
+VkResult BindImageMemory(VkDevice device, VkImage image, VkDeviceMemory memory, VkDeviceSize memoryOffset)
+{
+	DECLARE_EXTERN_FUNCTION(vkBindImageMemory);
+	return fp_vkBindImageMemory(device, image, memory, memoryOffset);
+}
+
+
+void GetBufferMemoryRequirements(VkDevice device, VkBuffer buffer, VkMemoryRequirements* pMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetBufferMemoryRequirements);
+	fp_vkGetBufferMemoryRequirements(device, buffer, pMemoryRequirements);
+}
+
+
+void GetImageMemoryRequirements(VkDevice device, VkImage image, VkMemoryRequirements* pMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetImageMemoryRequirements);
+	fp_vkGetImageMemoryRequirements(device, image, pMemoryRequirements);
+}
+
+
+void GetImageSparseMemoryRequirements(
+	VkDevice device,
+	VkImage image,
+	uint32_t* pSparseMemoryRequirementCount,
+	VkSparseImageMemoryRequirements* pSparseMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetImageSparseMemoryRequirements);
+	fp_vkGetImageSparseMemoryRequirements(device, image, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
+}
+
+
+VkResult CreateFence(
+	VkDevice device,
+	const VkFenceCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkFence* pFence)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateFence);
+	return fp_vkCreateFence(device, pCreateInfo, pAllocator, pFence);
+}
+
+
+void DestroyFence(VkDevice device, VkFence fence, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyFence);
+	fp_vkDestroyFence(device, fence, pAllocator);
+}
+
+
+VkResult ResetFences(VkDevice device, uint32_t fenceCount, const VkFence* pFences)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetFences);
+	return fp_vkResetFences(device, fenceCount, pFences);
+}
+
+
+VkResult GetFenceStatus(VkDevice device, VkFence fence)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetFenceStatus);
+	return fp_vkGetFenceStatus(device, fence);
+}
+
+
+VkResult WaitForFences(
+	VkDevice device,
+	uint32_t fenceCount,
+	const VkFence* pFences,
+	VkBool32 waitAll,
+	uint64_t timeout)
+{
+	DECLARE_EXTERN_FUNCTION(vkWaitForFences);
+	return fp_vkWaitForFences(device, fenceCount, pFences, waitAll, timeout);
+}
+
+
+VkResult CreateSemaphore(
+	VkDevice device,
+	const VkSemaphoreCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkSemaphore* pSemaphore)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateSemaphore);
+	return fp_vkCreateSemaphore(device, pCreateInfo, pAllocator, pSemaphore);
+}
+
+
+void DestroySemaphore(VkDevice device, VkSemaphore semaphore, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroySemaphore);
+	fp_vkDestroySemaphore(device, semaphore, pAllocator);
+}
+
+
+VkResult CreateEvent(
+	VkDevice device,
+	const VkEventCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkEvent* pEvent)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateEvent);
+	return fp_vkCreateEvent(device, pCreateInfo, pAllocator, pEvent);
+}
+
+
+void DestroyEvent(VkDevice device, VkEvent event, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyEvent);
+	fp_vkDestroyEvent(device, event, pAllocator);
+}
+
+
+VkResult GetEventStatus(VkDevice device, VkEvent event)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetEventStatus);
+	return fp_vkGetEventStatus(device, event);
+}
+
+
+VkResult SetEvent(VkDevice device, VkEvent event)
+{
+	DECLARE_EXTERN_FUNCTION(vkSetEvent);
+	return fp_vkSetEvent(device, event);
+}
+
+
+VkResult ResetEvent(VkDevice device, VkEvent event)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetEvent);
+	return fp_vkResetEvent(device, event);
+}
+
+
+VkResult CreateQueryPool(
+	VkDevice device,
+	const VkQueryPoolCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkQueryPool* pQueryPool)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateQueryPool);
+	return fp_vkCreateQueryPool(device, pCreateInfo, pAllocator, pQueryPool);
+}
+
+
+void DestroyQueryPool(VkDevice device, VkQueryPool queryPool, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyQueryPool);
+	fp_vkDestroyQueryPool(device, queryPool, pAllocator);
+}
+
+
+VkResult GetQueryPoolResults(
+	VkDevice device,
+	VkQueryPool queryPool,
+	uint32_t firstQuery,
+	uint32_t queryCount,
+	size_t dataSize,
+	void* pData,
+	VkDeviceSize stride,
+	VkQueryResultFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetQueryPoolResults);
+	return fp_vkGetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
+}
+
+
+VkResult CreateBuffer(
+	VkDevice device,
+	const VkBufferCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkBuffer* pBuffer)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateBuffer);
+	return fp_vkCreateBuffer(device, pCreateInfo, pAllocator, pBuffer);
+}
+
+
+void DestroyBuffer(VkDevice device, VkBuffer buffer, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyBuffer);
+	fp_vkDestroyBuffer(device, buffer, pAllocator);
+}
+
+VkResult CreateBufferView(VkDevice device,
+	const VkBufferViewCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkBufferView* pView)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateBufferView);
+	return fp_vkCreateBufferView(device, pCreateInfo, pAllocator, pView);
+}
+
+
+void DestroyBufferView(VkDevice device, VkBufferView bufferView, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyBufferView);
+	fp_vkDestroyBufferView(device, bufferView, pAllocator);
+}
+
+
+VkResult CreateImage(
+	VkDevice device,
+	const VkImageCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkImage* pImage)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateImage);
+	return fp_vkCreateImage(device, pCreateInfo, pAllocator, pImage);
+}
+
+
+void DestroyImage(VkDevice device, VkImage image, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyImage);
+	fp_vkDestroyImage(device, image, pAllocator);
+}
+
+
+void GetImageSubresourceLayout(
+	VkDevice device,
+	VkImage image,
+	const VkImageSubresource* pSubresource,
+	VkSubresourceLayout* pLayout)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetImageSubresourceLayout);
+	fp_vkGetImageSubresourceLayout(device, image, pSubresource, pLayout);
+}
+
+
+VkResult CreateImageView(
+	VkDevice device,
+	const VkImageViewCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkImageView* pView)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateImageView);
+	return fp_vkCreateImageView(device, pCreateInfo, pAllocator, pView);
+}
+
+
+void DestroyImageView(VkDevice device, VkImageView imageView, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyImageView);
+	fp_vkDestroyImageView(device, imageView, pAllocator);
+}
+
+
+VkResult CreateShaderModule(
+	VkDevice device,
+	const VkShaderModuleCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkShaderModule* pShaderModule)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateShaderModule);
+	return fp_vkCreateShaderModule(device, pCreateInfo, pAllocator, pShaderModule);
+}
+
+
+void DestroyShaderModule(VkDevice device, VkShaderModule shaderModule, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyShaderModule);
+	fp_vkDestroyShaderModule(device, shaderModule, pAllocator);
+}
+
+
+VkResult CreatePipelineCache(
+	VkDevice device,
+	const VkPipelineCacheCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkPipelineCache* pPipelineCache)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreatePipelineCache);
+	return fp_vkCreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
+}
+
+
+void DestroyPipelineCache(VkDevice device, VkPipelineCache pipelineCache, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyPipelineCache);
+	fp_vkDestroyPipelineCache(device, pipelineCache, pAllocator);
+}
+
+
+VkResult GetPipelineCacheData(VkDevice device, VkPipelineCache pipelineCache, size_t* pDataSize, void* pData)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetPipelineCacheData);
+	return fp_vkGetPipelineCacheData(device, pipelineCache, pDataSize, pData);
+}
+
+
+VkResult MergePipelineCaches(
+	VkDevice device,
+	VkPipelineCache dstCache,
+	uint32_t srcCacheCount,
+	const VkPipelineCache* pSrcCaches)
+{
+	DECLARE_EXTERN_FUNCTION(vkMergePipelineCaches);
+	return fp_vkMergePipelineCaches(device, dstCache, srcCacheCount, pSrcCaches);
+}
+
+
+VkResult CreateGraphicsPipelines(
+	VkDevice device,
+	VkPipelineCache pipelineCache,
+	uint32_t createInfoCount,
+	const VkGraphicsPipelineCreateInfo* pCreateInfos,
+	const VkAllocationCallbacks* pAllocator,
+	VkPipeline* pPipelines)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateGraphicsPipelines);
+	return fp_vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+}
+
+
+VkResult CreateComputePipelines(
+	VkDevice device,
+	VkPipelineCache pipelineCache,
+	uint32_t createInfoCount,
+	const VkComputePipelineCreateInfo* pCreateInfos,
+	const VkAllocationCallbacks* pAllocator,
+	VkPipeline* pPipelines)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateComputePipelines);
+	return fp_vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+}
+
+
+void DestroyPipeline(VkDevice device, VkPipeline pipeline, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyPipeline);
+	return fp_vkDestroyPipeline(device, pipeline, pAllocator);
+}
+
+
+VkResult CreatePipelineLayout(
+	VkDevice device,
+	const VkPipelineLayoutCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkPipelineLayout* pPipelineLayout)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreatePipelineLayout);
+	return fp_vkCreatePipelineLayout(device, pCreateInfo, pAllocator, pPipelineLayout);
+}
+
+
+void DestroyPipelineLayout(VkDevice device, VkPipelineLayout pipelineLayout, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyPipelineLayout);
+	fp_vkDestroyPipelineLayout(device, pipelineLayout, pAllocator);
+}
+
+
+VkResult CreateSampler(
+	VkDevice device,
+	const VkSamplerCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkSampler* pSampler)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateSampler);
+	return fp_vkCreateSampler(device, pCreateInfo, pAllocator, pSampler);
+}
+
+
+void DestroySampler(VkDevice device, VkSampler sampler, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroySampler);
+	fp_vkDestroySampler(device, sampler, pAllocator);
+}
+
+
+VkResult CreateDescriptorSetLayout(
+	VkDevice device,
+	const VkDescriptorSetLayoutCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkDescriptorSetLayout* pSetLayout)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateDescriptorSetLayout);
+	return fp_vkCreateDescriptorSetLayout(device, pCreateInfo, pAllocator, pSetLayout);
+}
+
+
+void DestroyDescriptorSetLayout(
+	VkDevice device,
+	VkDescriptorSetLayout descriptorSetLayout,
+	const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyDescriptorSetLayout);
+	fp_vkDestroyDescriptorSetLayout(device, descriptorSetLayout, pAllocator);
+}
+
+
+VkResult CreateDescriptorPool(
+	VkDevice device,
+	const VkDescriptorPoolCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkDescriptorPool* pDescriptorPool)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateDescriptorPool);
+	return fp_vkCreateDescriptorPool(device, pCreateInfo, pAllocator, pDescriptorPool);
+}
+
+
+void DestroyDescriptorPool(VkDevice device, VkDescriptorPool descriptorPool, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyDescriptorPool);
+	fp_vkDestroyDescriptorPool(device, descriptorPool, pAllocator);
+}
+
+
+VkResult ResetDescriptorPool(VkDevice device, VkDescriptorPool descriptorPool, VkDescriptorPoolResetFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetDescriptorPool);
+	return fp_vkResetDescriptorPool(device, descriptorPool, flags);
+}
+
+
+VkResult AllocateDescriptorSets(
+	VkDevice device,
+	const VkDescriptorSetAllocateInfo* pAllocateInfo,
+	VkDescriptorSet* pDescriptorSets)
+{
+	DECLARE_EXTERN_FUNCTION(vkAllocateDescriptorSets);
+	return fp_vkAllocateDescriptorSets(device, pAllocateInfo, pDescriptorSets);
+}
+
+
+VkResult FreeDescriptorSets(
+	VkDevice device,
+	VkDescriptorPool descriptorPool,
+	uint32_t descriptorSetCount,
+	const VkDescriptorSet* pDescriptorSets)
+{
+	DECLARE_EXTERN_FUNCTION(vkFreeDescriptorSets);
+	return fp_vkFreeDescriptorSets(device, descriptorPool, descriptorSetCount, pDescriptorSets);
+}
+
+
+void UpdateDescriptorSets(
+	VkDevice device,
+	uint32_t descriptorWriteCount,
+	const VkWriteDescriptorSet* pDescriptorWrites,
+	uint32_t descriptorCopyCount,
+	const VkCopyDescriptorSet* pDescriptorCopies)
+{
+	DECLARE_EXTERN_FUNCTION(vkUpdateDescriptorSets);
+	fp_vkUpdateDescriptorSets(device, descriptorWriteCount, pDescriptorWrites, descriptorCopyCount, pDescriptorCopies);
+}
+
+
+VkResult CreateFramebuffer(
+	VkDevice device,
+	const VkFramebufferCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkFramebuffer* pFramebuffer)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateFramebuffer);
+	return fp_vkCreateFramebuffer(device, pCreateInfo, pAllocator, pFramebuffer);
+}
+
+
+void DestroyFramebuffer(
+	VkDevice device,
+	VkFramebuffer framebuffer,
+	const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyFramebuffer);
+	fp_vkDestroyFramebuffer(device, framebuffer, pAllocator);
 }
 
 } // namespace VK
