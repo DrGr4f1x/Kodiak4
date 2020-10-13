@@ -844,6 +844,106 @@ void DestroyFramebuffer(
 	fp_vkDestroyFramebuffer(device, framebuffer, pAllocator);
 }
 
+
+VkResult CreateRenderPass(
+	VkDevice device,
+	const VkRenderPassCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkRenderPass* pRenderPass)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateRenderPass);
+	return fp_vkCreateRenderPass(device, pCreateInfo, pAllocator, pRenderPass);
+}
+
+
+void DestroyRenderPass(VkDevice device, VkRenderPass renderPass, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyRenderPass);
+	fp_vkDestroyRenderPass(device, renderPass, pAllocator);
+}
+
+
+void GetRenderAreaGranularity(VkDevice device, VkRenderPass renderPass, VkExtent2D* pGranularity)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetRenderAreaGranularity);
+	fp_vkGetRenderAreaGranularity(device, renderPass, pGranularity);
+}
+
+
+VkResult CreateCommandPool(
+	VkDevice device,
+	const VkCommandPoolCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkCommandPool* pCommandPool)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateCommandPool);
+	return fp_vkCreateCommandPool(device, pCreateInfo, pAllocator, pCommandPool);
+}
+
+
+void DestroyCommandPool(VkDevice device, VkCommandPool commandPool, const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyCommandPool);
+	fp_vkDestroyCommandPool(device, commandPool, pAllocator);
+}
+
+
+VkResult ResetCommandPool(VkDevice device, VkCommandPool commandPool, VkCommandPoolResetFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetCommandPool);
+	return fp_vkResetCommandPool(device, commandPool, flags);
+}
+
+
+VkResult AllocateCommandBuffers(
+	VkDevice device,
+	const VkCommandBufferAllocateInfo* pAllocateInfo,
+	VkCommandBuffer* pCommandBuffers)
+{
+	DECLARE_EXTERN_FUNCTION(vkAllocateCommandBuffers);
+	return fp_vkAllocateCommandBuffers(device, pAllocateInfo, pCommandBuffers);
+}
+
+
+void FreeCommandBuffers(
+	VkDevice device,
+	VkCommandPool commandPool,
+	uint32_t commandBufferCount,
+	const VkCommandBuffer* pCommandBuffers)
+{
+	DECLARE_EXTERN_FUNCTION(vkFreeCommandBuffers);
+	fp_vkFreeCommandBuffers(device, commandPool, commandBufferCount, pCommandBuffers);
+}
+
+
+VkResult QueueSubmit(
+	VkQueue queue,
+	uint32_t submitCount,
+	const VkSubmitInfo* pSubmits,
+	VkFence fence)
+{
+	DECLARE_EXTERN_FUNCTION(vkQueueSubmit);
+	return fp_vkQueueSubmit(queue, submitCount, pSubmits, fence);
+}
+
+
+VkResult QueueWaitIdle(VkQueue queue)
+{
+	DECLARE_EXTERN_FUNCTION(vkQueueWaitIdle);
+	return fp_vkQueueWaitIdle(queue);
+}
+
+
+VkResult QueueBindSparse(
+	VkQueue queue,
+	uint32_t bindInfoCount,
+	const VkBindSparseInfo* pBindInfo,
+	VkFence fence)
+{
+	DECLARE_EXTERN_FUNCTION(vkQueueBindSparse);
+	return fp_vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
+}
+
 } // namespace VK
 
 

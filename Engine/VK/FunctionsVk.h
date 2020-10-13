@@ -297,9 +297,39 @@ void DestroyFramebuffer(
 	VkDevice device,
 	VkFramebuffer framebuffer,
 	const VkAllocationCallbacks* pAllocator);
-
-// Core queue functions
-
-// Core command buffer functions
+VkResult CreateRenderPass(
+	VkDevice device,
+	const VkRenderPassCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkRenderPass* pRenderPass);
+void DestroyRenderPass(VkDevice device, VkRenderPass renderPass, const VkAllocationCallbacks* pAllocator);
+void GetRenderAreaGranularity(VkDevice device, VkRenderPass renderPass,	VkExtent2D* pGranularity);
+VkResult CreateCommandPool(
+	VkDevice device,
+	const VkCommandPoolCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkCommandPool* pCommandPool);
+void DestroyCommandPool(VkDevice device, VkCommandPool commandPool,	const VkAllocationCallbacks* pAllocator);
+VkResult ResetCommandPool(VkDevice device, VkCommandPool commandPool, VkCommandPoolResetFlags flags);
+VkResult AllocateCommandBuffers(
+	VkDevice device,
+	const VkCommandBufferAllocateInfo* pAllocateInfo, 
+	VkCommandBuffer* pCommandBuffers);
+void FreeCommandBuffers(
+	VkDevice device,
+	VkCommandPool commandPool,
+	uint32_t commandBufferCount,
+	const VkCommandBuffer* pCommandBuffers);
+VkResult QueueSubmit(
+	VkQueue queue,
+	uint32_t submitCount,
+	const VkSubmitInfo* pSubmits,
+	VkFence fence);
+VkResult QueueWaitIdle(VkQueue queue);
+VkResult QueueBindSparse(
+	VkQueue queue,
+	uint32_t bindInfoCount,
+	const VkBindSparseInfo* pBindInfo,
+	VkFence fence);
 
 } // namespace VK
