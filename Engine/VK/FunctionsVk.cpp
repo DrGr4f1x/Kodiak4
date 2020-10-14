@@ -944,6 +944,532 @@ VkResult QueueBindSparse(
 	return fp_vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
 }
 
+
+VkResult BeginCommandBuffer(VkCommandBuffer commandBuffer, const VkCommandBufferBeginInfo* pBeginInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkBeginCommandBuffer);
+	return fp_vkBeginCommandBuffer(commandBuffer, pBeginInfo);
+}
+
+
+VkResult EndCommandBuffer(VkCommandBuffer commandBuffer)
+{
+	DECLARE_EXTERN_FUNCTION(vkEndCommandBuffer);
+	return fp_vkEndCommandBuffer(commandBuffer);
+}
+
+
+VkResult ResetCommandBuffer(VkCommandBuffer commandBuffer, VkCommandBufferResetFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetCommandBuffer);
+	return fp_vkResetCommandBuffer(commandBuffer, flags);
+}
+
+
+void CmdBindPipeline(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipeline pipeline)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBindPipeline);
+	fp_vkCmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
+}
+
+
+void CmdSetViewport(
+	VkCommandBuffer commandBuffer,
+	uint32_t firstViewport,
+	uint32_t viewportCount,
+	const VkViewport* pViewports)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetViewport);
+	fp_vkCmdSetViewport(commandBuffer, firstViewport, viewportCount, pViewports);
+}
+
+
+void CmdSetScissor(
+	VkCommandBuffer commandBuffer,
+	uint32_t firstScissor,
+	uint32_t scissorCount,
+	const VkRect2D* pScissors)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetScissor);
+	fp_vkCmdSetScissor(commandBuffer, firstScissor, scissorCount, pScissors);
+}
+
+
+void CmdSetLineWidth(VkCommandBuffer commandBuffer, float lineWidth)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetLineWidth);
+	fp_vkCmdSetLineWidth(commandBuffer, lineWidth);
+}
+
+
+void CmdSetDepthBias(
+	VkCommandBuffer commandBuffer,
+	float depthBiasConstantFactor,
+	float depthBiasClamp,
+	float depthBiasSlopeFactor)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetDepthBias);
+	fp_vkCmdSetDepthBias(commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
+}
+
+
+void CmdSetBlendConstants(VkCommandBuffer commandBuffer, const float blendConstants[4])
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetBlendConstants);
+	fp_vkCmdSetBlendConstants(commandBuffer, blendConstants);
+}
+
+
+void CmdSetDepthBounds(VkCommandBuffer commandBuffer, float minDepthBounds, float maxDepthBounds)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetDepthBounds);
+	fp_vkCmdSetDepthBounds(commandBuffer, minDepthBounds, maxDepthBounds);
+}
+
+
+void CmdSetStencilCompareMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t compareMask)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetStencilCompareMask);
+	fp_vkCmdSetStencilCompareMask(commandBuffer, faceMask, compareMask);
+}
+
+
+void CmdSetStencilWriteMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t writeMask)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetStencilWriteMask);
+	fp_vkCmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
+}
+
+
+void CmdSetStencilReference(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t reference)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetStencilReference);
+	fp_vkCmdSetStencilReference(commandBuffer, faceMask, reference);
+}
+
+
+void CmdBindDescriptorSets(
+	VkCommandBuffer commandBuffer,
+	VkPipelineBindPoint pipelineBindPoint,
+	VkPipelineLayout layout,
+	uint32_t firstSet,
+	uint32_t descriptorSetCount,
+	const VkDescriptorSet* pDescriptorSets,
+	uint32_t dynamicOffsetCount,
+	const uint32_t* pDynamicOffsets)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBindDescriptorSets);
+	fp_vkCmdBindDescriptorSets(
+		commandBuffer,
+		pipelineBindPoint,
+		layout,
+		firstSet,
+		descriptorSetCount,
+		pDescriptorSets,
+		dynamicOffsetCount,
+		pDynamicOffsets);
+}
+
+
+void CmdBindIndexBuffer(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBindIndexBuffer);
+	fp_vkCmdBindIndexBuffer(commandBuffer, buffer, offset, indexType);
+}
+
+
+void CmdBindVertexBuffers(
+	VkCommandBuffer commandBuffer,
+	uint32_t firstBinding,
+	uint32_t bindingCount,
+	const VkBuffer* pBuffers,
+	const VkDeviceSize* pOffsets)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBindVertexBuffers);
+	fp_vkCmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
+}
+
+
+void CmdDraw(
+	VkCommandBuffer commandBuffer,
+	uint32_t vertexCount,
+	uint32_t instanceCount,
+	uint32_t firstVertex,
+	uint32_t firstInstance)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDraw);
+	fp_vkCmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
+}
+
+void CmdDrawIndexed(
+	VkCommandBuffer commandBuffer,
+	uint32_t indexCount,
+	uint32_t instanceCount,
+	uint32_t firstIndex,
+	int32_t vertexOffset,
+	uint32_t firstInstance)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDrawIndexed);
+	fp_vkCmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+}
+
+
+void CmdDrawIndirect(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	uint32_t drawCount,
+	uint32_t stride)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDrawIndirect);
+	fp_vkCmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
+
+void CmdDrawIndexedIndirect(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	uint32_t drawCount,
+	uint32_t stride)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDrawIndexedIndirect);
+	fp_vkCmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
+
+void CmdDispatch(VkCommandBuffer commandBuffer, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDispatch);
+	fp_vkCmdDispatch(commandBuffer, groupCountX, groupCountY, groupCountZ);
+}
+
+
+void CmdDispatchIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDispatchIndirect);
+	fp_vkCmdDispatchIndirect(commandBuffer, buffer, offset);
+}
+
+
+void CmdCopyBuffer(
+	VkCommandBuffer commandBuffer,
+	VkBuffer srcBuffer,
+	VkBuffer dstBuffer,
+	uint32_t regionCount,
+	const VkBufferCopy* pRegions)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdCopyBuffer);
+	fp_vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regionCount, pRegions);
+}
+
+
+void CmdCopyImage(
+	VkCommandBuffer commandBuffer,
+	VkImage srcImage,
+	VkImageLayout srcImageLayout,
+	VkImage dstImage,
+	VkImageLayout dstImageLayout,
+	uint32_t regionCount,
+	const VkImageCopy* pRegions)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdCopyImage);
+	fp_vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
+}
+
+
+void CmdBlitImage(
+	VkCommandBuffer commandBuffer,
+	VkImage srcImage,
+	VkImageLayout srcImageLayout,
+	VkImage dstImage,
+	VkImageLayout dstImageLayout,
+	uint32_t regionCount,
+	const VkImageBlit* pRegions,
+	VkFilter filter)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBlitImage);
+	fp_vkCmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions, filter);
+}
+
+
+void CmdCopyBufferToImage(
+	VkCommandBuffer commandBuffer,
+	VkBuffer srcBuffer,
+	VkImage dstImage,
+	VkImageLayout dstImageLayout,
+	uint32_t regionCount,
+	const VkBufferImageCopy* pRegions)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdCopyBufferToImage);
+	fp_vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, pRegions);
+}
+
+
+void CmdCopyImageToBuffer(
+	VkCommandBuffer commandBuffer,
+	VkImage srcImage,
+	VkImageLayout srcImageLayout,
+	VkBuffer dstBuffer,
+	uint32_t regionCount,
+	const VkBufferImageCopy* pRegions)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdCopyImageToBuffer);
+	fp_vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, pRegions);
+}
+
+
+void CmdUpdateBuffer(
+	VkCommandBuffer commandBuffer,
+	VkBuffer dstBuffer,
+	VkDeviceSize dstOffset,
+	VkDeviceSize dataSize,
+	const void* pData)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdUpdateBuffer);
+	fp_vkCmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, pData);
+}
+
+
+void CmdFillBuffer(
+	VkCommandBuffer commandBuffer,
+	VkBuffer dstBuffer,
+	VkDeviceSize dstOffset,
+	VkDeviceSize size,
+	uint32_t data)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdFillBuffer);
+	fp_vkCmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
+}
+
+
+void CmdClearColorImage(
+	VkCommandBuffer commandBuffer,
+	VkImage image,
+	VkImageLayout imageLayout,
+	const VkClearColorValue* pColor,
+	uint32_t rangeCount,
+	const VkImageSubresourceRange* pRanges)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdClearColorImage);
+	fp_vkCmdClearColorImage(commandBuffer, image, imageLayout, pColor, rangeCount, pRanges);
+}
+
+
+void CmdClearDepthStencilImage(
+	VkCommandBuffer commandBuffer,
+	VkImage image,
+	VkImageLayout imageLayout,
+	const VkClearDepthStencilValue* pDepthStencil,
+	uint32_t rangeCount,
+	const VkImageSubresourceRange* pRanges)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdClearDepthStencilImage);
+	fp_vkCmdClearDepthStencilImage(commandBuffer, image, imageLayout, pDepthStencil, rangeCount, pRanges);
+}
+
+
+void CmdClearAttachments(
+	VkCommandBuffer commandBuffer,
+	uint32_t attachmentCount,
+	const VkClearAttachment* pAttachments,
+	uint32_t rectCount,
+	const VkClearRect* pRects)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdClearAttachments);
+	fp_vkCmdClearAttachments(commandBuffer, attachmentCount, pAttachments, rectCount, pRects);
+}
+
+
+void CmdResolveImage(
+	VkCommandBuffer commandBuffer,
+	VkImage srcImage,
+	VkImageLayout srcImageLayout,
+	VkImage dstImage,
+	VkImageLayout dstImageLayout,
+	uint32_t regionCount,
+	const VkImageResolve* pRegions)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdResolveImage);
+	fp_vkCmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
+}
+
+
+void CmdSetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetEvent);
+	fp_vkCmdSetEvent(commandBuffer, event, stageMask);
+}
+
+
+void CmdResetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdResetEvent);
+	fp_vkCmdResetEvent(commandBuffer, event, stageMask);
+}
+
+
+void CmdWaitEvents(
+	VkCommandBuffer commandBuffer,
+	uint32_t eventCount,
+	const VkEvent* pEvents,
+	VkPipelineStageFlags srcStageMask,
+	VkPipelineStageFlags dstStageMask,
+	uint32_t memoryBarrierCount,
+	const VkMemoryBarrier* pMemoryBarriers,
+	uint32_t bufferMemoryBarrierCount,
+	const VkBufferMemoryBarrier* pBufferMemoryBarriers,
+	uint32_t imageMemoryBarrierCount,
+	const VkImageMemoryBarrier* pImageMemoryBarriers)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdWaitEvents);
+	fp_vkCmdWaitEvents(
+		commandBuffer,
+		eventCount,
+		pEvents,
+		srcStageMask,
+		dstStageMask,
+		memoryBarrierCount,
+		pMemoryBarriers,
+		bufferMemoryBarrierCount,
+		pBufferMemoryBarriers,
+		imageMemoryBarrierCount,
+		pImageMemoryBarriers);
+}
+
+
+void CmdPipelineBarrier(
+	VkCommandBuffer commandBuffer,
+	VkPipelineStageFlags srcStageMask,
+	VkPipelineStageFlags dstStageMask,
+	VkDependencyFlags dependencyFlags,
+	uint32_t memoryBarrierCount,
+	const VkMemoryBarrier* pMemoryBarriers,
+	uint32_t bufferMemoryBarrierCount,
+	const VkBufferMemoryBarrier* pBufferMemoryBarriers,
+	uint32_t imageMemoryBarrierCount,
+	const VkImageMemoryBarrier* pImageMemoryBarriers)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdPipelineBarrier);
+	fp_vkCmdPipelineBarrier(
+		commandBuffer,
+		srcStageMask,
+		dstStageMask,
+		dependencyFlags,
+		memoryBarrierCount,
+		pMemoryBarriers,
+		bufferMemoryBarrierCount,
+		pBufferMemoryBarriers,
+		imageMemoryBarrierCount,
+		pImageMemoryBarriers);
+}
+
+
+void CmdBeginQuery(
+	VkCommandBuffer commandBuffer,
+	VkQueryPool queryPool,
+	uint32_t query,
+	VkQueryControlFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBeginQuery);
+	fp_vkCmdBeginQuery(commandBuffer, queryPool, query, flags);
+}
+
+
+void CmdEndQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdEndQuery);
+	fp_vkCmdEndQuery(commandBuffer, queryPool, query);
+}
+
+
+void CmdResetQueryPool(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdResetQueryPool);
+	fp_vkCmdResetQueryPool(commandBuffer, queryPool, firstQuery, queryCount);
+}
+
+
+void CmdWriteTimestamp(
+	VkCommandBuffer commandBuffer,
+	VkPipelineStageFlagBits pipelineStage,
+	VkQueryPool queryPool,
+	uint32_t query)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdWriteTimestamp);
+	fp_vkCmdWriteTimestamp(commandBuffer, pipelineStage, queryPool, query);
+}
+
+
+void CmdCopyQueryPoolResults(
+	VkCommandBuffer commandBuffer,
+	VkQueryPool queryPool,
+	uint32_t firstQuery,
+	uint32_t queryCount,
+	VkBuffer dstBuffer,
+	VkDeviceSize dstOffset,
+	VkDeviceSize stride,
+	VkQueryResultFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdCopyQueryPoolResults);
+	fp_vkCmdCopyQueryPoolResults(
+		commandBuffer,
+		queryPool,
+		firstQuery,
+		queryCount,
+		dstBuffer,
+		dstOffset,
+		stride,
+		flags);
+}
+
+
+void CmdPushConstants(
+	VkCommandBuffer commandBuffer,
+	VkPipelineLayout layout,
+	VkShaderStageFlags stageFlags,
+	uint32_t offset,
+	uint32_t size,
+	const void* pValues)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdPushConstants);
+	fp_vkCmdPushConstants(commandBuffer, layout, stageFlags, offset, size, pValues);
+}
+
+
+void CmdBeginRenderPass(
+	VkCommandBuffer commandBuffer,
+	const VkRenderPassBeginInfo* pRenderPassBegin,
+	VkSubpassContents contents)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBeginRenderPass);
+	fp_vkCmdBeginRenderPass(commandBuffer, pRenderPassBegin, contents);
+}
+
+
+void CmdNextSubpass(VkCommandBuffer commandBuffer, VkSubpassContents contents)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdNextSubpass);
+	fp_vkCmdNextSubpass(commandBuffer, contents);
+}
+
+
+void CmdEndRenderPass(VkCommandBuffer commandBuffer)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdEndRenderPass);
+	fp_vkCmdEndRenderPass(commandBuffer);
+}
+
+
+void CmdExecuteCommands(
+	VkCommandBuffer commandBuffer,
+	uint32_t commandBufferCount,
+	const VkCommandBuffer* pCommandBuffers)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdExecuteCommands);
+	fp_vkCmdExecuteCommands(commandBuffer, commandBufferCount, pCommandBuffers);
+}
+
 } // namespace VK
 
 
