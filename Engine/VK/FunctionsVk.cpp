@@ -1631,6 +1631,129 @@ void CmdDispatchBase(
 	fp_vkCmdDispatchBase(commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY, groupCountZ);
 }
 
+
+// Vulkan 1.2 device functions
+VkResult CreateRenderPass2(
+	VkDevice device,
+	const VkRenderPassCreateInfo2* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkRenderPass* pRenderPass)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateRenderPass2);
+	return fp_vkCreateRenderPass2(device, pCreateInfo, pAllocator, pRenderPass);
+}
+
+
+void ResetQueryPool(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount)
+{
+	DECLARE_EXTERN_FUNCTION(vkResetQueryPool);
+	fp_vkResetQueryPool(device, queryPool, firstQuery, queryCount);
+}
+
+
+VkResult GetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetSemaphoreCounterValue);
+	return fp_vkGetSemaphoreCounterValue(device, semaphore, pValue);
+}
+
+
+VkResult WaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitInfo, uint64_t timeout)
+{
+	DECLARE_EXTERN_FUNCTION(vkWaitSemaphores);
+	return fp_vkWaitSemaphores(device, pWaitInfo, timeout);
+}
+
+
+VkResult SignalSemaphore(VkDevice device, const VkSemaphoreSignalInfo* pSignalInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkSignalSemaphore);
+	return fp_vkSignalSemaphore(device, pSignalInfo);
+}
+
+
+VkDeviceAddress GetBufferDeviceAddress(VkDevice device, const VkBufferDeviceAddressInfo* pInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetBufferDeviceAddress);
+	return fp_vkGetBufferDeviceAddress(device, pInfo);
+}
+
+
+uint64_t GetBufferOpaqueCaptureAddress(VkDevice device, const VkBufferDeviceAddressInfo* pInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetBufferOpaqueCaptureAddress);
+	return fp_vkGetBufferOpaqueCaptureAddress(device, pInfo);
+}
+
+
+uint64_t GetDeviceMemoryOpaqueCaptureAddress(VkDevice device, const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetDeviceMemoryOpaqueCaptureAddress);
+	return fp_vkGetDeviceMemoryOpaqueCaptureAddress(device, pInfo);
+}
+
+
+void CmdDrawIndirectCount(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	VkBuffer countBuffer,
+	VkDeviceSize countBufferOffset,
+	uint32_t maxDrawCount,
+	uint32_t stride)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDrawIndirectCount);
+	fp_vkCmdDrawIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+}
+
+
+void CmdDrawIndexedIndirectCount(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	VkBuffer countBuffer,
+	VkDeviceSize countBufferOffset,
+	uint32_t maxDrawCount,
+	uint32_t stride)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDrawIndexedIndirectCount);
+	fp_vkCmdDrawIndexedIndirectCount(
+		commandBuffer,
+		buffer,
+		offset,
+		countBuffer,
+		countBufferOffset,
+		maxDrawCount,
+		stride);
+}
+
+
+void CmdBeginRenderPass2(
+	VkCommandBuffer commandBuffer,
+	const VkRenderPassBeginInfo* pRenderPassBegin,
+	const VkSubpassBeginInfo* pSubpassBeginInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdBeginRenderPass2);
+	fp_vkCmdBeginRenderPass2(commandBuffer, pRenderPassBegin, pSubpassBeginInfo);
+}
+
+
+void CmdNextSubpass2(
+	VkCommandBuffer commandBuffer,
+	const VkSubpassBeginInfo* pSubpassBeginInfo,
+	const VkSubpassEndInfo* pSubpassEndInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdNextSubpass2);
+	fp_vkCmdNextSubpass2(commandBuffer, pSubpassBeginInfo, pSubpassEndInfo);
+}
+
+
+void CmdEndRenderPass2(VkCommandBuffer commandBuffer, const VkSubpassEndInfo* pSubpassEndInfo)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdEndRenderPass2);
+	fp_vkCmdEndRenderPass2(commandBuffer, pSubpassEndInfo);
+}
+
 } // namespace VK
 
 

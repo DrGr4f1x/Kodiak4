@@ -609,4 +609,45 @@ void CmdDispatchBase(
 	uint32_t groupCountZ);
 
 
+// Vulkan 1.2 device functions
+VkResult CreateRenderPass2(
+	VkDevice device,
+	const VkRenderPassCreateInfo2* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkRenderPass* pRenderPass);
+void ResetQueryPool(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount);
+VkResult GetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue);
+VkResult WaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitInfo, uint64_t timeout);
+VkResult SignalSemaphore(VkDevice device, const VkSemaphoreSignalInfo* pSignalInfo);
+VkDeviceAddress GetBufferDeviceAddress(VkDevice device, const VkBufferDeviceAddressInfo* pInfo);
+uint64_t GetBufferOpaqueCaptureAddress(VkDevice device, const VkBufferDeviceAddressInfo* pInfo);
+uint64_t GetDeviceMemoryOpaqueCaptureAddress(VkDevice device, const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo);
+
+
+void CmdDrawIndirectCount(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	VkBuffer countBuffer,
+	VkDeviceSize countBufferOffset,
+	uint32_t maxDrawCount,
+	uint32_t stride);
+void CmdDrawIndexedIndirectCount(
+	VkCommandBuffer commandBuffer,
+	VkBuffer buffer,
+	VkDeviceSize offset,
+	VkBuffer countBuffer,
+	VkDeviceSize countBufferOffset,
+	uint32_t maxDrawCount,
+	uint32_t stride);
+void CmdBeginRenderPass2(
+	VkCommandBuffer commandBuffer, 
+	const VkRenderPassBeginInfo* pRenderPassBegin,
+	const VkSubpassBeginInfo* pSubpassBeginInfo);
+void CmdNextSubpass2(
+	VkCommandBuffer commandBuffer,
+	const VkSubpassBeginInfo* pSubpassBeginInfo,
+	const VkSubpassEndInfo* pSubpassEndInfo);
+void CmdEndRenderPass2(VkCommandBuffer commandBuffer, const VkSubpassEndInfo* pSubpassEndInfo);
+
 } // namespace VK
