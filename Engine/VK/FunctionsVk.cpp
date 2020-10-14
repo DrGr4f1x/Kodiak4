@@ -1470,6 +1470,167 @@ void CmdExecuteCommands(
 	fp_vkCmdExecuteCommands(commandBuffer, commandBufferCount, pCommandBuffers);
 }
 
+
+// Vulkan 1.1 device functions
+VkResult BindBufferMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindBufferMemoryInfo* pBindInfos)
+{
+	DECLARE_EXTERN_FUNCTION(vkBindBufferMemory2);
+	return fp_vkBindBufferMemory2(device, bindInfoCount, pBindInfos);
+}
+
+
+VkResult BindImageMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindImageMemoryInfo* pBindInfos)
+{
+	DECLARE_EXTERN_FUNCTION(vkBindImageMemory2);
+	return fp_vkBindImageMemory2(device, bindInfoCount, pBindInfos);
+}
+
+
+void GetDeviceGroupPeerMemoryFeatures(
+	VkDevice device,
+	uint32_t heapIndex,
+	uint32_t localDeviceIndex,
+	uint32_t remoteDeviceIndex,
+	VkPeerMemoryFeatureFlags* pPeerMemoryFeatures)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetDeviceGroupPeerMemoryFeatures);
+	fp_vkGetDeviceGroupPeerMemoryFeatures(
+		device,
+		heapIndex,
+		localDeviceIndex,
+		remoteDeviceIndex,
+		pPeerMemoryFeatures);
+}
+
+
+void GetImageMemoryRequirements2(
+	VkDevice device,
+	const VkImageMemoryRequirementsInfo2* pInfo,
+	VkMemoryRequirements2* pMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetImageMemoryRequirements2);
+	fp_vkGetImageMemoryRequirements2(device, pInfo, pMemoryRequirements);
+}
+
+
+void GetBufferMemoryRequirements2(
+	VkDevice device,
+	const VkBufferMemoryRequirementsInfo2* pInfo,
+	VkMemoryRequirements2* pMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetBufferMemoryRequirements2);
+	fp_vkGetBufferMemoryRequirements2(device, pInfo, pMemoryRequirements);
+}
+
+
+void GetImageSparseMemoryRequirements2(
+	VkDevice device,
+	const VkImageSparseMemoryRequirementsInfo2* pInfo,
+	uint32_t* pSparseMemoryRequirementCount,
+	VkSparseImageMemoryRequirements2* pSparseMemoryRequirements)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetImageSparseMemoryRequirements2);
+	fp_vkGetImageSparseMemoryRequirements2(device, pInfo, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
+}
+
+
+void TrimCommandPool(VkDevice device, VkCommandPool commandPool, VkCommandPoolTrimFlags flags)
+{
+	DECLARE_EXTERN_FUNCTION(vkTrimCommandPool);
+	fp_vkTrimCommandPool(device, commandPool, flags);
+}
+
+
+void GetDeviceQueue2(VkDevice device, const VkDeviceQueueInfo2* pQueueInfo, VkQueue* pQueue)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetDeviceQueue2);
+	fp_vkGetDeviceQueue2(device, pQueueInfo, pQueue);
+}
+
+
+VkResult CreateSamplerYcbcrConversion(
+	VkDevice device,
+	const VkSamplerYcbcrConversionCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkSamplerYcbcrConversion* pYcbcrConversion)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateSamplerYcbcrConversion);
+	return fp_vkCreateSamplerYcbcrConversion(device, pCreateInfo, pAllocator, pYcbcrConversion);
+}
+
+
+void DestroySamplerYcbcrConversion(
+	VkDevice device,
+	VkSamplerYcbcrConversion ycbcrConversion,
+	const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroySamplerYcbcrConversion);
+	fp_vkDestroySamplerYcbcrConversion(device, ycbcrConversion, pAllocator);
+}
+
+
+VkResult CreateDescriptorUpdateTemplate(
+	VkDevice device,
+	const VkDescriptorUpdateTemplateCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkDescriptorUpdateTemplate* pDescriptorUpdateTemplate)
+{
+	DECLARE_EXTERN_FUNCTION(vkCreateDescriptorUpdateTemplate);
+	return fp_vkCreateDescriptorUpdateTemplate(device, pCreateInfo, pAllocator, pDescriptorUpdateTemplate);
+}
+
+
+void DestroyDescriptorUpdateTemplate(
+	VkDevice device,
+	VkDescriptorUpdateTemplate descriptorUpdateTemplate,
+	const VkAllocationCallbacks* pAllocator)
+{
+	DECLARE_EXTERN_FUNCTION(vkDestroyDescriptorUpdateTemplate);
+	fp_vkDestroyDescriptorUpdateTemplate(device, descriptorUpdateTemplate, pAllocator);
+}
+
+
+void UpdateDescriptorSetWithTemplate(
+	VkDevice device,
+	VkDescriptorSet descriptorSet,
+	VkDescriptorUpdateTemplate descriptorUpdateTemplate,
+	const void* pData)
+{
+	DECLARE_EXTERN_FUNCTION(vkUpdateDescriptorSetWithTemplate);
+	fp_vkUpdateDescriptorSetWithTemplate(device, descriptorSet, descriptorUpdateTemplate, pData);
+}
+
+
+void GetDescriptorSetLayoutSupport(
+	VkDevice device,
+	const VkDescriptorSetLayoutCreateInfo* pCreateInfo,
+	VkDescriptorSetLayoutSupport* pSupport)
+{
+	DECLARE_EXTERN_FUNCTION(vkGetDescriptorSetLayoutSupport);
+	fp_vkGetDescriptorSetLayoutSupport(device, pCreateInfo, pSupport);
+}
+
+
+void CmdSetDeviceMask(VkCommandBuffer commandBuffer, uint32_t deviceMask)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdSetDeviceMask);
+	fp_vkCmdSetDeviceMask(commandBuffer, deviceMask);
+}
+
+
+void CmdDispatchBase(
+	VkCommandBuffer commandBuffer,
+	uint32_t baseGroupX,
+	uint32_t baseGroupY,
+	uint32_t baseGroupZ,
+	uint32_t groupCountX,
+	uint32_t groupCountY,
+	uint32_t groupCountZ)
+{
+	DECLARE_EXTERN_FUNCTION(vkCmdDispatchBase);
+	fp_vkCmdDispatchBase(commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY, groupCountZ);
+}
+
 } // namespace VK
 
 

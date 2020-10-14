@@ -545,5 +545,68 @@ void CmdExecuteCommands(
 	const VkCommandBuffer* pCommandBuffers);
 
 
+// Vulkan 1.1 device functions
+VkResult BindBufferMemory2(VkDevice device,	uint32_t bindInfoCount,	const VkBindBufferMemoryInfo* pBindInfos);
+VkResult BindImageMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindImageMemoryInfo* pBindInfos);
+void GetDeviceGroupPeerMemoryFeatures(
+	VkDevice device,
+	uint32_t heapIndex,
+	uint32_t localDeviceIndex,
+	uint32_t remoteDeviceIndex,
+	VkPeerMemoryFeatureFlags* pPeerMemoryFeatures);
+void GetImageMemoryRequirements2(
+	VkDevice device,
+	const VkImageMemoryRequirementsInfo2* pInfo,
+	VkMemoryRequirements2* pMemoryRequirements);
+void GetBufferMemoryRequirements2(
+	VkDevice device,
+	const VkBufferMemoryRequirementsInfo2* pInfo,
+	VkMemoryRequirements2* pMemoryRequirements);
+void GetImageSparseMemoryRequirements2(
+	VkDevice device,
+	const VkImageSparseMemoryRequirementsInfo2* pInfo,
+	uint32_t* pSparseMemoryRequirementCount,
+	VkSparseImageMemoryRequirements2* pSparseMemoryRequirements);
+void TrimCommandPool(VkDevice device, VkCommandPool commandPool, VkCommandPoolTrimFlags flags);
+void GetDeviceQueue2(VkDevice device, const VkDeviceQueueInfo2* pQueueInfo, VkQueue* pQueue);
+VkResult CreateSamplerYcbcrConversion(
+	VkDevice device,
+	const VkSamplerYcbcrConversionCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkSamplerYcbcrConversion* pYcbcrConversion);
+void DestroySamplerYcbcrConversion(
+	VkDevice device,
+	VkSamplerYcbcrConversion ycbcrConversion,
+	const VkAllocationCallbacks* pAllocator);
+VkResult CreateDescriptorUpdateTemplate(
+	VkDevice device,
+	const VkDescriptorUpdateTemplateCreateInfo* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkDescriptorUpdateTemplate* pDescriptorUpdateTemplate);
+void DestroyDescriptorUpdateTemplate(
+	VkDevice device,
+	VkDescriptorUpdateTemplate descriptorUpdateTemplate,
+	const VkAllocationCallbacks* pAllocator);
+void UpdateDescriptorSetWithTemplate(
+	VkDevice device,
+	VkDescriptorSet descriptorSet,
+	VkDescriptorUpdateTemplate descriptorUpdateTemplate,
+	const void* pData);
+void GetDescriptorSetLayoutSupport(
+	VkDevice device,
+	const VkDescriptorSetLayoutCreateInfo* pCreateInfo,
+	VkDescriptorSetLayoutSupport* pSupport);
+
+
+void CmdSetDeviceMask(VkCommandBuffer commandBuffer, uint32_t deviceMask);
+void CmdDispatchBase(
+	VkCommandBuffer commandBuffer,
+	uint32_t baseGroupX,
+	uint32_t baseGroupY,
+	uint32_t baseGroupZ,
+	uint32_t groupCountX,
+	uint32_t groupCountY,
+	uint32_t groupCountZ);
+
 
 } // namespace VK
