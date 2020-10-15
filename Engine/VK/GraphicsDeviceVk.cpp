@@ -15,6 +15,7 @@
 #include "GraphicsFeatures.h"
 
 #include "DeviceFeatureHandlersVk.h"
+#include "LoaderVk.h"
 #include "StructuresVk.h"
 #include "UtilityVk.h"
 
@@ -115,6 +116,12 @@ void GraphicsDevice::Initialize(
 	m_height = height;
 	m_colorFormat = colorFormat;
 	m_depthFormat = depthFormat;
+
+	// Load base functions (can be loaded without a live VkInstance)
+	LoadBaseFunctionPointers();
+
+	// Initialize instance properties
+	m_instanceProperties.Initialize();
 
 	// Initialization begins here
 	CreateInstance();

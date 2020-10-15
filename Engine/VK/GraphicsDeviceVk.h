@@ -11,6 +11,7 @@
 #pragma once
 
 #include "ExtensionManagerVk.h"
+#include "InstancePropertiesVk.h"
 
 
 namespace Kodiak
@@ -100,6 +101,9 @@ private:
 	std::shared_ptr<SurfaceRef> m_surface;
 	std::shared_ptr<SwapchainRef> m_swapchain;
 	std::vector<std::shared_ptr<ImageRef>> m_swapchainImages;
+
+	// Instance properties
+	InstanceProperties m_instanceProperties;
 
 	// Device features and properties
 	DeviceFeatures m_supportedFeatures;

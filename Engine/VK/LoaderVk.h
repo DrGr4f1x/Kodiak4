@@ -13,10 +13,14 @@
 namespace Kodiak
 {
 
-// Core functions
-void LoadCoreFunctionPointers();
-void LoadCoreInstanceFunctionPointers(VkInstance instance);
-void LoadCoreDeviceFunctionPointers(VkDevice device);
+// Core functions (these can be loaded without a live VkInstance object)
+void LoadBaseFunctionPointers();
+
+// Instance functions for various Vulkan versions
+void LoadInstanceFunctionPointers(VkInstance instance, uint32_t apiVersion);
+
+// Device functions for various Vulkan versions
+void LoadDeviceFunctionPointers(VkDevice device, uint32_t apiVersion);
 
 
 // Extension functions

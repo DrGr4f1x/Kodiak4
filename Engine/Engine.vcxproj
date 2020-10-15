@@ -285,6 +285,7 @@
     <ClInclude Include="VK\Extensions\EXT\ValidationFeaturesEXT.h" />
     <ClInclude Include="VK\Extensions\IExtensionVk.h" />
     <ClInclude Include="VK\Extensions\KHR\SwapchainKHR.h" />
+    <ClInclude Include="VK\FunctionPointersVk.h" />
     <ClInclude Include="VK\FunctionsVk.h" />
     <ClInclude Include="VK\GraphicsDeviceVk.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug12|x64'">true</ExcludedFromBuild>
@@ -296,6 +297,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile12|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug12|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="VK\InstancePropertiesVk.h" />
     <ClInclude Include="VK\LoaderVk.h" />
     <ClInclude Include="VK\RefCountVk.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release12|x64'">true</ExcludedFromBuild>
@@ -343,6 +345,7 @@
     <ClCompile Include="VK\Extensions\EXT\DebugUtilsEXT.cpp" />
     <ClCompile Include="VK\Extensions\EXT\ValidationFeaturesEXT.cpp" />
     <ClCompile Include="VK\Extensions\KHR\SwapchainKHR.cpp" />
+    <ClCompile Include="VK\FunctionPointersVk.cpp" />
     <ClCompile Include="VK\FunctionsVk.cpp" />
     <ClCompile Include="VK\GraphicsDeviceVk.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug12|x64'">true</ExcludedFromBuild>
@@ -354,8 +357,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile12|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug12|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="VK\InstancePropertiesVk.cpp" />
     <ClCompile Include="VK\LoaderVk.cpp" />
     <ClCompile Include="VK\RefCountVk.cpp" />
+    <ClCompile Include="VK\UtilityVk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\Functions.inl" />

@@ -12,11 +12,14 @@
 
 #include "FunctionsVk.h"
 
+#include "FunctionPointersVk.h"
+
+
 using namespace std;
 using namespace Kodiak;
 
+
 #define DECLARE_EXTERN_FUNCTION(name) \
-extern PFN_##name fp_##name; \
 VALIDATE_FUNCTION_POINTER(fp_##name)
 
 
@@ -28,7 +31,6 @@ PFN_vkVoidFunction GetInstanceProcAddr(VkInstance instance, const char* pName)
 	DECLARE_EXTERN_FUNCTION(vkGetInstanceProcAddr);
 	return fp_vkGetInstanceProcAddr(instance, pName);
 }
-
 
 VkResult EnumerateInstanceVersion(uint32_t* pApiVersion)
 {
